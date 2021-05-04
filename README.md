@@ -1,0 +1,2 @@
+# algoProje
+algoProje git
