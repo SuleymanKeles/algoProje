@@ -2,12 +2,12 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class InputArrays {
- int arraySize = 100;
-int numberbound = 1000;
+     int arraySize = 100;
+ int numberbound = 1000;
 
 
 
-     int[] randomArray() {
+    public int[] randomArray() {
         int[] array = new int[arraySize];
         for (int i = 1; i <= array.length; i++) {
             array[i - 1] = i;
@@ -25,7 +25,7 @@ int numberbound = 1000;
 
 
 
-    int[] repetitiveRandomArray() {
+    public int[] repetitiveRandomArray() {
         int[] array = new int[arraySize];
 
         Random rand2 = new Random();
@@ -37,7 +37,7 @@ int numberbound = 1000;
     }
 
 
-    int[] minArray() {
+    public  int[] minArray() {
 
         int[] array = new int[arraySize];
 
@@ -47,7 +47,7 @@ int numberbound = 1000;
         return array;
     }
 
-    int[] maxArray() {
+    public int[] maxArray() {
         int[] array = new int[arraySize];
 
         ArrayList<Integer> arrayList = new ArrayList<>();
@@ -61,7 +61,7 @@ int numberbound = 1000;
         return array;
     }
 
-    int[] divisionArray(int division) {
+    public int[] divisionArray(int division) {
         int[] array = new int[arraySize];
 
         ArrayList<Integer> arrayList = new ArrayList<>();
