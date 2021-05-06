@@ -147,7 +147,7 @@ public class main {
         System.out.println(avarageQuickMedianList.toString());
 
         try {
-            System.out.println("Emine den selamlar ");
+
             // Writing sheet data
             File file = new File("C:\\Users\\emine\\OneDrive\\Belgeler\\GitHub\\algoProje\\src\\selam.xlsx");   //creating a new file instance
             FileOutputStream outputStream = new FileOutputStream(file);
