@@ -14,26 +14,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class main {
-    static ArrayList<ArrayList<Double>> avarageInsertion = new ArrayList<>();
-    static ArrayList<ArrayList<Double>> avarageBinaryInsertion = new ArrayList<>();
-    static ArrayList<ArrayList<Double>> avarageMerge = new ArrayList<>();
-    static ArrayList<ArrayList<Double>> avarageQuickFirst = new ArrayList<>();
-    static ArrayList<ArrayList<Double>> avarageQuickMedian = new ArrayList<>();
-    static ArrayList<ArrayList<Double>> avarageHeap = new ArrayList<>();
-    static ArrayList<ArrayList<Double>> avarageCounting = new ArrayList<>();
+    static ArrayList<Long> estimatedTimeInsertionList = new ArrayList<>();
+    static ArrayList<Long> estimatedTimeMergeList = new ArrayList<>();
+    static ArrayList<Long> estimatedTimeQuickList = new ArrayList<>();
+    static ArrayList<Long> estimatedTimeQuickMedianList = new ArrayList<>();
+    static ArrayList<Double> avarageInsertionList = new ArrayList<>();
+    static ArrayList<Double> avarageMergeList = new ArrayList<>();
+    static ArrayList<Double> avarageQuickList = new ArrayList<>();
+    static ArrayList<Double> avarageQuickMedianList = new ArrayList<>();
 
     public static void main(String[] args) {
+        InputArrays inputs = new InputArrays();
         long startTime = 0;
         long endTime = 0;
         long estimatedTimeInsertion = 0;
         long estimatedTimeMerge = 0;
-        long estimatedTimeQuickFirst = 0;
+        long estimatedTimeQuick = 0;
         long estimatedTimeQuickMedian = 0;
-        long estimatedTimeBinaryInsertion = 0;
-        long estimatedTimeHeap = 0;
-        long estimatedTimeCounting = 0;
 
-        String[] sheetName = {"randomArray", "repetitiveRandomArray", "minArray", "maxArray", "divisionArray2",};
+        String[] sheetName = {"randomArray", "repetitiveRandomArray", "minArray", "maxArray", "divisionArray2", "divisionArray4", "divisionArray8", "divisionArray16", "divisionArray32"};
 
         Workbook workbook = null;
 
@@ -41,20 +40,24 @@ public class main {
 
         Sheet sheetAverage = workbook.createSheet("Average");
 
-        int repeatNumber = 100;
+
+        int repeatNumber = 10000;
 
         for (int inputArrayType = 0; inputArrayType < sheetName.length; inputArrayType++) {
-            InputArrays inputs = new InputArrays();
 
             System.out.println(sheetName[inputArrayType] + "Finished...");
             int[] array = new int[10000];
-            int arraySize = 10;
+
             switch (inputArrayType) {
                 case 0 -> array = inputs.randomArray();
                 case 1 -> array = inputs.repetitiveRandomArray();
                 case 2 -> array = inputs.minArray();
                 case 3 -> array = inputs.maxArray();
                 case 4 -> array = inputs.divisionArray(2);
+                case 5 -> array = inputs.divisionArray(4);
+                case 6 -> array = inputs.divisionArray(8);
+                case 7 -> array = inputs.divisionArray(16);
+                case 8 -> array = inputs.divisionArray(32);
                 default -> System.exit(0);
             }
             int[] arr1 = array;
@@ -63,204 +66,90 @@ public class main {
             int[] arr4 = array;
             int[] arr5 = array;
             int[] arr6 = array;
-            int[] arr7 = array;
-
-            final String[] header = {"Insertion", "Binary - Insertion ", "Merge", "Quick First", "Quick Median", "Heap", "Counting"};
-
-            Sheet sheet = workbook.createSheet(sheetName[inputArrayType]);
-
-            Row row = sheet.createRow(0);
-            row.createCell(0).setCellValue("TITLE");
-
-            for (int j = 0; j < 76; j += 8) {
-                for (int i = 0; i < header.length; i++) {
-                    // each column 12 characters wide
-                    sheet.setColumnWidth(i, 12 * 256);
-                    Cell cell = row.createCell(i + 1 + j);
-                    cell.setCellValue(header[i]);
-                }
-            }
-
-            row = sheet.createRow(1);
-            row.createCell(0).setCellValue("AVARAGE");
-
-            row.createCell(1).setCellFormula(averageText("B"));
-            row.createCell(2).setCellFormula(averageText("C"));
-            row.createCell(3).setCellFormula(averageText("D"));
-            row.createCell(4).setCellFormula(averageText("E"));
-            row.createCell(5).setCellFormula(averageText("F"));
-            row.createCell(6).setCellFormula(averageText("G"));
-            row.createCell(7).setCellFormula(averageText("H"));
-            row.createCell(8).setCellFormula(averageText("I"));
-            row.createCell(9).setCellFormula(averageText("J"));
-            row.createCell(10).setCellFormula(averageText("K"));
-            row.createCell(11).setCellFormula(averageText("L"));
-            row.createCell(12).setCellFormula(averageText("M"));
-            row.createCell(13).setCellFormula(averageText("N"));
-            row.createCell(14).setCellFormula(averageText("O"));
-            row.createCell(15).setCellFormula(averageText("P"));
-            row.createCell(16).setCellFormula(averageText("Q"));
-            row.createCell(17).setCellFormula(averageText("R"));
-            row.createCell(18).setCellFormula(averageText("S"));
-            row.createCell(19).setCellFormula(averageText("T"));
-            row.createCell(20).setCellFormula(averageText("U"));
-            row.createCell(21).setCellFormula(averageText("V"));
-            row.createCell(22).setCellFormula(averageText("W"));
-            row.createCell(23).setCellFormula(averageText("X"));
-            row.createCell(24).setCellFormula(averageText("Y"));
-            row.createCell(25).setCellFormula(averageText("Z"));
-            row.createCell(26).setCellFormula(averageText("AA"));
-            row.createCell(27).setCellFormula(averageText("AB"));
-            row.createCell(28).setCellFormula(averageText("AC"));
-            row.createCell(29).setCellFormula(averageText("AD"));
-            row.createCell(30).setCellFormula(averageText("AE"));
-            row.createCell(31).setCellFormula(averageText("AF"));
-            row.createCell(32).setCellFormula(averageText("AG"));
-            row.createCell(33).setCellFormula(averageText("AH"));
-            row.createCell(34).setCellFormula(averageText("AI"));
-            row.createCell(35).setCellFormula(averageText("AJ"));
-            row.createCell(36).setCellFormula(averageText("AK"));
-            row.createCell(37).setCellFormula(averageText("AL"));
-            row.createCell(38).setCellFormula(averageText("AM"));
-            row.createCell(39).setCellFormula(averageText("AN"));
-            row.createCell(40).setCellFormula(averageText("AO"));
-            row.createCell(41).setCellFormula(averageText("AP"));
-            row.createCell(42).setCellFormula(averageText("AQ"));
-            row.createCell(43).setCellFormula(averageText("AR"));
-            row.createCell(44).setCellFormula(averageText("AS"));
-            row.createCell(45).setCellFormula(averageText("AT"));
-            row.createCell(46).setCellFormula(averageText("AU"));
-            row.createCell(47).setCellFormula(averageText("AV"));
-            row.createCell(48).setCellFormula(averageText("AW"));
-            row.createCell(49).setCellFormula(averageText("AX"));
-            row.createCell(50).setCellFormula(averageText("AY"));
-            row.createCell(51).setCellFormula(averageText("AZ"));          
-            row.createCell(52).setCellFormula(averageText("BB"));
-            row.createCell(53).setCellFormula(averageText("BC"));
-            row.createCell(54).setCellFormula(averageText("BD"));
-            row.createCell(55).setCellFormula(averageText("BE"));
-            row.createCell(56).setCellFormula(averageText("BF"));
-            row.createCell(57).setCellFormula(averageText("BG"));
-            row.createCell(58).setCellFormula(averageText("BH"));
-            row.createCell(59).setCellFormula(averageText("BI"));
-            row.createCell(60).setCellFormula(averageText("BJ"));
-            row.createCell(61).setCellFormula(averageText("BK"));
-            row.createCell(62).setCellFormula(averageText("BL"));
-            row.createCell(63).setCellFormula(averageText("BM"));
-            row.createCell(64).setCellFormula(averageText("BN"));
-            row.createCell(65).setCellFormula(averageText("BO"));
-            row.createCell(66).setCellFormula(averageText("BP"));
-            row.createCell(67).setCellFormula(averageText("BQ"));
-            row.createCell(68).setCellFormula(averageText("BR"));
-            row.createCell(69).setCellFormula(averageText("BS"));
-            row.createCell(70).setCellFormula(averageText("BT"));
-            row.createCell(71).setCellFormula(averageText("BU"));
-            row.createCell(72).setCellFormula(averageText("BV"));
-            row.createCell(73).setCellFormula(averageText("BW"));
-            row.createCell(74).setCellFormula(averageText("BX"));
-            row.createCell(75).setCellFormula(averageText("BY"));
-            row.createCell(76).setCellFormula(averageText("BZ"));
-            row.createCell(77).setCellFormula(averageText("CA"));
-            row.createCell(78).setCellFormula(averageText("CB"));
-
-
-
 
             int x = 0;
             while (x < repeatNumber) {
-                row = sheet.createRow(x + 2);
-                row.createCell(0).setCellValue(x + 1);
-                for (int i = 0; i < 10; i++) {
 //                       InsertionSort
-                    Insertion insertion = new Insertion();
-                    startTime = System.nanoTime();
-                    Insertion.insertionSort(arr1);
-                    endTime = System.nanoTime();
-                    estimatedTimeInsertion = endTime - startTime;
-//                      BinaryInsertionSort
-                    BinaryInsertionSort binaryInsertionSort = new BinaryInsertionSort();
-                    startTime = System.nanoTime();
-                    binaryInsertionSort.sort(arr2);
-                    endTime = System.nanoTime();
-                    estimatedTimeBinaryInsertion = endTime - startTime;
-                    //                       MERGE SORT
-                    MergeSort mergeSortObject = new MergeSort();
-                    startTime = System.nanoTime();
-                    mergeSortObject.mergeSort(arr3);
-                    endTime = System.nanoTime();
-                    estimatedTimeMerge = endTime - startTime;
+
+                Insertion insertion = new Insertion();
+
+                startTime = System.nanoTime();
+                Insertion.insertionSort(arr1);
+                endTime = System.nanoTime();
+                estimatedTimeInsertion = endTime - startTime;
+                startTime = 0;
+                endTime = 0;
+                //                       MERGE SORT
+
+                MergeSort mergeSortObject = new MergeSort();
+                startTime = System.nanoTime();
+                mergeSortObject.mergeSort(arr2);
+                endTime = System.nanoTime();
+                estimatedTimeMerge = endTime - startTime;
+                startTime = 0;
+                endTime = 0;
 //                         Quick-sort (pivot is always selected as the first element),
-                    QuickSortFirstIndex quickSortFirstIndex = new QuickSortFirstIndex();
-                    startTime = System.nanoTime();
-                    quickSortFirstIndex.quickSort(arr4, 0, arr4.length - 1);
-                    endTime = System.nanoTime();
-                    estimatedTimeQuickFirst = endTime - startTime;
+                QuickSortFirstIndex quickSortFirstIndex = new QuickSortFirstIndex();
+                startTime = System.nanoTime();
+                quickSortFirstIndex.quickSort(arr3, 0, arr3.length - 1);
+                endTime = System.nanoTime();
+                estimatedTimeQuick = endTime - startTime;
+                startTime = 0;
+                endTime = 0;
 //                          Quick-sort MEDIAN
-                    QuickSortMedian quickSortMedian = new QuickSortMedian();
-                    startTime = System.nanoTime();
-                    quickSortMedian.quickSort(arr5);
-                    endTime = System.nanoTime();
-                    estimatedTimeQuickMedian = endTime - startTime;
-//                    HEAP SORT
-                    HeapSort heapSort = new HeapSort();
-                    startTime = System.nanoTime();
-                    heapSort.sort(arr6);
-                    endTime = System.nanoTime();
-                    estimatedTimeHeap = endTime - startTime;
-//                                        COUNTING SORT
-                    CountingSort countingSort = new CountingSort();
-                    startTime = System.nanoTime();
-                    countingSort.sort(arr7);
-                    endTime = System.nanoTime();
-                    estimatedTimeCounting = endTime - startTime;
+                QuickSortMedian quickSortMedian = new QuickSortMedian();
+                startTime = System.nanoTime();
+                quickSortMedian.quickSort(arr4);
+                endTime = System.nanoTime();
+                estimatedTimeQuickMedian = endTime - startTime;
+                startTime = 0;
+                endTime = 0;
 
-                    row.createCell(1 + i * 8).setCellValue(estimatedTimeInsertion);
-                    row.createCell(2 + i * 8).setCellValue(estimatedTimeBinaryInsertion);
-                    row.createCell(3 + i * 8).setCellValue(estimatedTimeMerge);
-                    row.createCell(4 + i * 8).setCellValue(estimatedTimeQuickFirst);
-                    row.createCell(5 + i * 8).setCellValue(estimatedTimeQuickMedian);
-                    row.createCell(6 + i * 8).setCellValue(estimatedTimeHeap);
-                    row.createCell(7 + i * 8).setCellValue(estimatedTimeCounting);
 
-                    inputs.arraySize = arraySize * i;
+                estimatedTimeInsertionList.add(anomalyTime(estimatedTimeInsertion));
+                estimatedTimeMergeList.add(anomalyTime(estimatedTimeMerge));
+                estimatedTimeQuickList.add(anomalyTime(estimatedTimeQuick));
+                estimatedTimeQuickMedianList.add(anomalyTime(estimatedTimeQuickMedian));
+//                bufferedWriter.write("\t" + estimatedTimeInsertion + "                            " + estimatedTimeMerge + "                                " + estimatedTimeQuick + "                              " + estimatedTimeQuickMedian);
+//                bufferedWriter.newLine();
 
-                    switch (i) {
-                        case 0:
-                            break;
-                        case 1:
-                            break;
-                        case 2:
-                            break;
-                        case 3:
-                            break;
-                        case 4:
-                            break;
-                        case 5:
-                            break;
-                        case 6:
-                            break;
-                        case 7:
-                            break;
-                        case 8:
-                            break;
-                        case 9:
-                            break;
-                        default:
-                            break;
-                    }
-                }
                 x++;
             }
+//            System.out.println(Arrays.toString(arr1));
+//            System.out.println(estimatedTimeQuickList.toString());
+            writeExcel(workbook, sheetName, repeatNumber, inputArrayType,
+                    estimatedTimeInsertionList,
+                    estimatedTimeMergeList,
+                    estimatedTimeQuickList,
+                    estimatedTimeQuickMedianList
+            );
+
+            avarageInsertionList.add(listAverage(estimatedTimeInsertionList));
+            avarageMergeList.add(listAverage(estimatedTimeMergeList));
+            avarageQuickList.add(listAverage(estimatedTimeQuickList));
+            avarageQuickMedianList.add(listAverage(estimatedTimeQuickMedianList));
+
+            estimatedTimeInsertionList.clear();
+            estimatedTimeMergeList.clear();
+            estimatedTimeQuickList.clear();
+            estimatedTimeQuickMedianList.clear();
         }
-//        System.out.println(avarageInsertionList.toString());
-//        System.out.println(avarageMergeList.toString());
-//        System.out.println(avarageQuickList.toString());
-//        System.out.println(avarageQuickMedianList.toString());
+
+        writeExcelAvarage(workbook, sheetAverage, sheetName,
+                avarageInsertionList,
+                avarageMergeList,
+                avarageQuickList,
+                avarageQuickMedianList
+        );
+        System.out.println(avarageInsertionList.toString());
+        System.out.println(avarageMergeList.toString());
+        System.out.println(avarageQuickList.toString());
+        System.out.println(avarageQuickMedianList.toString());
 
         try {
 
             // Writing sheet data
-            File file = new File("C:\\Users\\suleyman\\Documents\\GitHub\\algoProje\\src\\selam.xlsx");   //creating a new file instance
+            File file = new File("C:\\Users\\emine\\OneDrive\\Belgeler\\GitHub\\algoProje\\src\\selam.xlsx");   //creating a new file instance
             FileOutputStream outputStream = new FileOutputStream(file);
             workbook.write(outputStream);
 
@@ -282,10 +171,6 @@ public class main {
 
     }
 
-    public static String averageText(String letter) {
-        return "AVERAGE(" + letter + "3:" + letter + "1003)";
-    }
-
     public static long anomalyTime(long time) {
         long newValue = 0;
         int digit = 0;
@@ -297,13 +182,21 @@ public class main {
         }
         newValue = time;
         if (time > 1000000) {
-            newValue = newValue / (10 ^ (digit - 5));
+            newValue = newValue / (10^(digit-5));
         }
-        if (newValue > 1000000)
+        if (newValue>1000000)
             newValue = anomalyTime(newValue);
         return newValue;
     }
 
+
+    public static double listAverage(ArrayList<Long> arrayList) {
+        long total = 0;
+        double avg;
+        for (Long aLong : arrayList) total += aLong;
+        avg = total / arrayList.size(); // finding ther average value
+        return avg;
+    }
 
     //method defined for reading a cell
     public static double ReadCellData(int vRow, int vColumn, File file) {
