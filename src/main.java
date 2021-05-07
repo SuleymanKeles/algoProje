@@ -14,16 +14,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class main {
-    static ArrayList<ArrayList<Long>> estimatedTimeInsertionList = new ArrayList<>();
-    static ArrayList<ArrayList<Long>> estimatedTimeMergeList = new ArrayList<>();
-    static ArrayList<ArrayList<Long>> estimatedTimeQuickList = new ArrayList<>();
-    static ArrayList<ArrayList<Long>> estimatedTimeQuickMedianList = new ArrayList<>();
+    static ArrayList<Long> estimatedTimeInsertionList = new ArrayList<>();
+    static ArrayList<Long> estimatedTimeMergeList = new ArrayList<>();
+    static ArrayList<Long> estimatedTimeQuickList = new ArrayList<>();
+    static ArrayList<Long> estimatedTimeQuickMedianList = new ArrayList<>();
     static ArrayList<Double> avarageInsertionList = new ArrayList<>();
     static ArrayList<Double> avarageMergeList = new ArrayList<>();
     static ArrayList<Double> avarageQuickList = new ArrayList<>();
     static ArrayList<Double> avarageQuickMedianList = new ArrayList<>();
 
     public static void main(String[] args) {
+        InputArrays inputs = new InputArrays();
         long startTime = 0;
         long endTime = 0;
         long estimatedTimeInsertion = 0;
@@ -31,7 +32,7 @@ public class main {
         long estimatedTimeQuick = 0;
         long estimatedTimeQuickMedian = 0;
 
-        String[] sheetName = {"randomArray", "repetitiveRandomArray", "minArray", "maxArray", "divisionArray2", };
+        String[] sheetName = {"randomArray", "repetitiveRandomArray", "minArray", "maxArray", "divisionArray2", "divisionArray4", "divisionArray8", "divisionArray16", "divisionArray32"};
 
         Workbook workbook = null;
 
@@ -40,23 +41,23 @@ public class main {
         Sheet sheetAverage = workbook.createSheet("Average");
 
 
+        int repeatNumber = 10000;
+
         for (int inputArrayType = 0; inputArrayType < sheetName.length; inputArrayType++) {
-            InputArrays inputs = new InputArrays();
-            System.out.println(sheetName[inputArrayType] + " Finished...");
+
+            System.out.println(sheetName[inputArrayType] + "Finished...");
             int[] array = new int[10000];
-            int arraySize = 10;
-            int repeatNumber = 10;
-            int arraySizeKindNumber = 10;
+
             switch (inputArrayType) {
                 case 0 -> array = inputs.randomArray();
                 case 1 -> array = inputs.repetitiveRandomArray();
                 case 2 -> array = inputs.minArray();
                 case 3 -> array = inputs.maxArray();
                 case 4 -> array = inputs.divisionArray(2);
-//                case 5 -> array = inputs.divisionArray(4);
-//                case 6 -> array = inputs.divisionArray(8);
-//                case 7 -> array = inputs.divisionArray(16);
-//                case 8 -> array = inputs.divisionArray(32);
+                case 5 -> array = inputs.divisionArray(4);
+                case 6 -> array = inputs.divisionArray(8);
+                case 7 -> array = inputs.divisionArray(16);
+                case 8 -> array = inputs.divisionArray(32);
                 default -> System.exit(0);
             }
             int[] arr1 = array;
@@ -68,81 +69,65 @@ public class main {
 
             int x = 0;
             while (x < repeatNumber) {
+//                       InsertionSort
 
-                for (int arraySizeCounter = 1; arraySizeCounter <= arraySizeKindNumber; arraySizeCounter++) {
-                    inputs.arraySize = arraySize * arraySizeCounter;
+                Insertion insertion = new Insertion();
 
-                    ArrayList<Long> tempList = new ArrayList<>();
+                startTime = System.nanoTime();
+                Insertion.insertionSort(arr1);
+                endTime = System.nanoTime();
+                estimatedTimeInsertion = endTime - startTime;
+                startTime = 0;
+                endTime = 0;
+                //                       MERGE SORT
 
-                    estimatedTimeInsertionList.add(tempList);
-                    estimatedTimeMergeList.add(tempList);
-                    estimatedTimeQuickList.add(tempList);
-                    estimatedTimeQuickMedianList.add(tempList);
-
-                    Insertion insertion = new Insertion();
-
-                    startTime = System.nanoTime();
-                    Insertion.insertionSort(arr1);
-                    endTime = System.nanoTime();
-                    estimatedTimeInsertion = endTime - startTime;
-                    startTime = 0;
-                    endTime = 0;
-                    //                       MERGE SORT
-
-                    MergeSort mergeSortObject = new MergeSort();
-                    startTime = System.nanoTime();
-                    mergeSortObject.mergeSort(arr2);
-                    endTime = System.nanoTime();
-                    estimatedTimeMerge = endTime - startTime;
-                    startTime = 0;
-                    endTime = 0;
+                MergeSort mergeSortObject = new MergeSort();
+                startTime = System.nanoTime();
+                mergeSortObject.mergeSort(arr2);
+                endTime = System.nanoTime();
+                estimatedTimeMerge = endTime - startTime;
+                startTime = 0;
+                endTime = 0;
 //                         Quick-sort (pivot is always selected as the first element),
-                    QuickSortFirstIndex quickSortFirstIndex = new QuickSortFirstIndex();
-                    startTime = System.nanoTime();
-                    quickSortFirstIndex.quickSort(arr3, 0, arr3.length - 1);
-                    endTime = System.nanoTime();
-                    estimatedTimeQuick = endTime - startTime;
-                    startTime = 0;
-                    endTime = 0;
+                QuickSortFirstIndex quickSortFirstIndex = new QuickSortFirstIndex();
+                startTime = System.nanoTime();
+                quickSortFirstIndex.quickSort(arr3, 0, arr3.length - 1);
+                endTime = System.nanoTime();
+                estimatedTimeQuick = endTime - startTime;
+                startTime = 0;
+                endTime = 0;
 //                          Quick-sort MEDIAN
-                    QuickSortMedian quickSortMedian = new QuickSortMedian();
-                    startTime = System.nanoTime();
-                    quickSortMedian.quickSort(arr4);
-                    endTime = System.nanoTime();
-                    estimatedTimeQuickMedian = endTime - startTime;
-                    startTime = 0;
-                    endTime = 0;
+                QuickSortMedian quickSortMedian = new QuickSortMedian();
+                startTime = System.nanoTime();
+                quickSortMedian.quickSort(arr4);
+                endTime = System.nanoTime();
+                estimatedTimeQuickMedian = endTime - startTime;
+                startTime = 0;
+                endTime = 0;
 
 
-                    estimatedTimeInsertionList.get(arraySizeCounter - 1).add(anomalyTime(estimatedTimeInsertion));
-                    estimatedTimeMergeList.get(arraySizeCounter - 1).add(anomalyTime(estimatedTimeMerge));
-                    estimatedTimeQuickList.get(arraySizeCounter - 1).add(anomalyTime(estimatedTimeQuick));
-                    estimatedTimeQuickMedianList.get(arraySizeCounter - 1).add(anomalyTime(estimatedTimeQuickMedian));
+                estimatedTimeInsertionList.add(anomalyTime(estimatedTimeInsertion));
+                estimatedTimeMergeList.add(anomalyTime(estimatedTimeMerge));
+                estimatedTimeQuickList.add(anomalyTime(estimatedTimeQuick));
+                estimatedTimeQuickMedianList.add(anomalyTime(estimatedTimeQuickMedian));
 //                bufferedWriter.write("\t" + estimatedTimeInsertion + "                            " + estimatedTimeMerge + "                                " + estimatedTimeQuick + "                              " + estimatedTimeQuickMedian);
 //                bufferedWriter.newLine();
-                }
+
                 x++;
             }
 //            System.out.println(Arrays.toString(arr1));
 //            System.out.println(estimatedTimeQuickList.toString());
-            writeExcel(
-                    workbook,
-                    sheetName,
-                    repeatNumber,
-                    inputArrayType,
-                    arraySizeKindNumber,
+            writeExcel(workbook, sheetName, repeatNumber, inputArrayType,
                     estimatedTimeInsertionList,
                     estimatedTimeMergeList,
                     estimatedTimeQuickList,
                     estimatedTimeQuickMedianList
             );
 
-//            avarageInsertionList.add(listAverage(estimatedTimeInsertionList));
-//            avarageMergeList.add(listAverage(estimatedTimeMergeList));
-//            avarageQuickList.add(listAverage(estimatedTimeQuickList));
-//            avarageQuickMedianList.add(listAverage(estimatedTimeQuickMedianList));
-
-
+            avarageInsertionList.add(listAverage(estimatedTimeInsertionList));
+            avarageMergeList.add(listAverage(estimatedTimeMergeList));
+            avarageQuickList.add(listAverage(estimatedTimeQuickList));
+            avarageQuickMedianList.add(listAverage(estimatedTimeQuickMedianList));
 
             estimatedTimeInsertionList.clear();
             estimatedTimeMergeList.clear();
@@ -150,23 +135,25 @@ public class main {
             estimatedTimeQuickMedianList.clear();
         }
 
-//        writeExcelAvarage(workbook, sheetAverage, sheetName,
-//                avarageInsertionList,
-//                avarageMergeList,
-//                avarageQuickList,
-//                avarageQuickMedianList
-//        );
+        writeExcelAvarage(workbook, sheetAverage, sheetName,
+                avarageInsertionList,
+                avarageMergeList,
+                avarageQuickList,
+                avarageQuickMedianList
+        );
         System.out.println(avarageInsertionList.toString());
-
         System.out.println(avarageMergeList.toString());
         System.out.println(avarageQuickList.toString());
         System.out.println(avarageQuickMedianList.toString());
 
         try {
+
             // Writing sheet data
-            File file = new File("C:\\Users\\suleyman\\Documents\\GitHub\\algoProje\\src\\selam.xlsx");   //creating a new file instance
+            File file = new File("C:\\Users\\emine\\OneDrive\\Belgeler\\GitHub\\algoProje\\src\\selam.xlsx");   //creating a new file instance
             FileOutputStream outputStream = new FileOutputStream(file);
             workbook.write(outputStream);
+
+
         } catch (EncryptedDocumentException | IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -195,9 +182,9 @@ public class main {
         }
         newValue = time;
         if (time > 1000000) {
-            newValue = newValue / (10 ^ (digit - 5));
+            newValue = newValue / (10^(digit-5));
         }
-        if (newValue > 1000000)
+        if (newValue>1000000)
             newValue = anomalyTime(newValue);
         return newValue;
     }
@@ -234,14 +221,13 @@ public class main {
                                   String[] sheetName,
                                   int rowNum,
                                   int inputArrayType,
-                                  int arraySizeKindNumber,
-                                  ArrayList<ArrayList<Long>> estimatedTimeInsertionList,
-                                  ArrayList<ArrayList<Long>> estimatedTimeMergeList,
-                                  ArrayList<ArrayList<Long>> estimatedTimeQuickList,
-                                  ArrayList<ArrayList<Long>> estimatedTimeQuickMedianList
+                                  ArrayList<Long> estimatedTimeInsertionList,
+                                  ArrayList<Long> estimatedTimeMergeList,
+                                  ArrayList<Long> estimatedTimeQuickList,
+                                  ArrayList<Long> estimatedTimeQuickMedianList
     ) {
 
-        final String[] header = {"Insertion", "Merge", "Quick First", "Quick Median"};
+        final String[] header = {"First Name", "Last Name", "Email", "DOB"};
 
 
         Sheet sheet = workbook.createSheet(sheetName[inputArrayType]);
@@ -264,44 +250,13 @@ public class main {
         row.createCell(4).setCellFormula("AVERAGE(E3:E1003)");
 
 
-        System.out.println(estimatedTimeInsertionList.get(0).toString());
-        System.out.println(estimatedTimeInsertionList.get(1).toString());
-        System.out.println(estimatedTimeInsertionList.get(2).toString());
-        System.out.println(estimatedTimeInsertionList.get(3).toString());
-        System.out.println(estimatedTimeInsertionList.get(4).toString());
-        System.out.println(estimatedTimeInsertionList.get(5).toString());
-        System.out.println(estimatedTimeInsertionList.get(6).toString());
-        System.out.println(estimatedTimeInsertionList.get(7).toString());
-        System.out.println(estimatedTimeInsertionList.get(8).toString());
-        System.out.println(estimatedTimeInsertionList.get(9).toString());
-        System.out.println(estimatedTimeInsertionList.get(10).toString());
-
         for (int i = 0; i < rowNum; i++) {
             row = sheet.createRow(i + 2);
             row.createCell(0).setCellValue(i + 1);
-            for (int j = 0; j < 9; j++) {
-                    row.createCell( j+ 1).setCellValue(estimatedTimeInsertionList.get(j).get(j));
-            }
-            for (int j = 0; j < estimatedTimeMergeList.size(); j++) {
-                for (int k = 0; k < estimatedTimeMergeList.get(j).size(); k++) {
-                    row.createCell( arraySizeKindNumber + j + 1).setCellValue(estimatedTimeMergeList.get(j).get(k));
-                }
-            }
-            for (int j = 0; j < estimatedTimeQuickList.size(); j++) {
-                for (int k = 0; k < estimatedTimeQuickList.get(j).size(); k++) {
-                    row.createCell( 2 * arraySizeKindNumber + j + 2).setCellValue(estimatedTimeQuickList.get(j).get(k));
-                }
-            }
-            for (int j = 0; j < estimatedTimeQuickMedianList.size(); j++) {
-                for (int k = 0; k < estimatedTimeQuickMedianList.get(j).size(); k++) {
-                    row.createCell( 3 * arraySizeKindNumber + j + 3).setCellValue(estimatedTimeQuickMedianList.get(j).get(k));
-                }
-            }
-
-
-//            row.createCell(2).setCellValue(estimatedTimeMergeList.get(i));
-//            row.createCell(3).setCellValue(estimatedTimeQuickList.get(i));
-//            row.createCell(4).setCellValue(estimatedTimeQuickMedianList.get(i));
+            row.createCell(1).setCellValue(estimatedTimeInsertionList.get(i));
+            row.createCell(2).setCellValue(estimatedTimeMergeList.get(i));
+            row.createCell(3).setCellValue(estimatedTimeQuickList.get(i));
+            row.createCell(4).setCellValue(estimatedTimeQuickMedianList.get(i));
         }
 
         // Create Excel chart and select data for it.
