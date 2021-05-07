@@ -2,15 +2,15 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class InputArrays {
-     static int arraySize = 10;
-    static int numberbound = 200;
+    public  int arraySize = 10;
+    public  int numberbound = 200;
 
 /*
     public InputArrays(int size) {
         this.arraySize=size;
     }*/
 
-    public static int[] randomArray() {
+    public  int[] randomArray() {
         int[] array = new int[arraySize];
         for (int i = 1; i <= array.length; i++) {
             array[i - 1] = i;
@@ -24,32 +24,32 @@ public class InputArrays {
             array[i] = temp;
         }
 
-        for (int i = 0; i < array.length; i++) {
-            System.out.print(array[i]+" ");
-        }
-        System.out.println();
+//        for (int i = 0; i < array.length; i++) {
+//            System.out.print(array[i] + " ");
+//        }
+//        System.out.println();
         return array;
     }
 
 
-    public static int[] repetitiveRandomArray() {
+    public  int[] repetitiveRandomArray() {
         int[] array = new int[arraySize];
 
         Random rand2 = new Random();
 
         for (int i = 0; i < array.length; i++) {
-            array[i] = rand2.nextInt(numberbound)+1;
+            array[i] = rand2.nextInt(numberbound) + 1;
         }
 
-        for (int i = 0; i < array.length; i++) {
-            System.out.print(array[i]+" ");
-        }
-        System.out.println();
+//        for (int i = 0; i < array.length; i++) {
+//            System.out.print(array[i] + " ");
+//        }
+//        System.out.println();
         return array;
     }
 
 
-    public static int[] minArray() {
+    public  int[] minArray() {
 
         int[] array = new int[arraySize];
 
@@ -57,14 +57,11 @@ public class InputArrays {
             array[i - 1] = i;
         }
 
-        for (int i = 0; i < array.length; i++) {
-            System.out.print(array[i]+" ");
-        }
-        System.out.println();
+
         return array;
     }
 
-    public static int[] maxArray() {
+    public  int[] maxArray() {
         int[] array = new int[arraySize];
 
         ArrayList<Integer> arrayList = new ArrayList<>();
@@ -76,15 +73,10 @@ public class InputArrays {
             array[i] = arrayList.get(i);
         }
 
-
-        for (int i = 0; i < array.length; i++) {
-            System.out.print(array[i]+" ");
-        }
-        System.out.println();
         return array;
     }
 
-    public static int[] divisionArray(int division) {
+    public  int[] divisionArray(int division) {
         int[] array = new int[arraySize];
 
         ArrayList<Integer> arrayList = new ArrayList<>();
@@ -97,159 +89,119 @@ public class InputArrays {
             array[i] = arrayList.get(i);
         }
 
-        for (int i = 0; i < array.length; i++) {
-            System.out.print(array[i]+" ");
-        }
-        System.out.println();
         return array;
     }
-    public static int [] notDistinctArray(){
+
+    public  int[] notDistinctArray() {
         int[] array = new int[arraySize];
 
         Random rand = new Random();
-        int element=rand.nextInt(numberbound+1);
+        int element = rand.nextInt(numberbound + 1);
         for (int i = 0; i < array.length; i++) {
             array[i] = element;
         }
 
-        for (int i = 0; i < array.length; i++) {
-            System.out.print(array[i]+" ");
-        }
-        System.out.println();
         return array;
     }
 
-    public static int [] flashChangeArray(){
-        int[] array =randomNotSequencedArray();
+    public  int[] flashChangeArray() {
+        int[] array = randomNotSequencedArray();
 
-        int max=array[0];
-        int min =0;
-        int mean=0;
-        int maxIndex=0;
-        int minIndex=0;
-
-        for (int i = 0; i < array.length; i++) {
-            if(array[i]>max){
-                max=array[i];
-                maxIndex=i;
-            }
-            if(min>array [i]){
-                min=array[i];
-                minIndex=i;
-            }
-            mean=mean+array[i];
-        }
-        mean=(mean/array.length);
-
-        if ((max-mean)>(mean-min)) {
-            array[maxIndex]=numberbound;
-        }
-        else
-            array[minIndex]=0;
+        int max = array[0];
+        int min = 0;
+        int mean = 0;
+        int maxIndex = 0;
+        int minIndex = 0;
 
         for (int i = 0; i < array.length; i++) {
-            System.out.print(array[i]+" ");
+            if (array[i] > max) {
+                max = array[i];
+                maxIndex = i;
+            }
+            if (min > array[i]) {
+                min = array[i];
+                minIndex = i;
+            }
+            mean = mean + array[i];
         }
-        System.out.println();
+        mean = (mean / array.length);
+
+        if ((max - mean) > (mean - min)) {
+            array[maxIndex] = numberbound;
+        } else
+            array[minIndex] = 0;
+
         return array;
     }
-    public static int[] randomNotSequencedArray() {
+
+    public  int[] randomNotSequencedArray() {
         int[] array = new int[arraySize];
 
         Random rand = new Random();
 
         for (int i = 0; i < array.length; i++) {
-            int randomValue = rand.nextInt(numberbound+1);
+            int randomValue = rand.nextInt(numberbound + 1);
             array[i] = randomValue;
         }
 
-        for (int i = 0; i < array.length; i++) {
-            System.out.print(array[i]+" ");
-        }
-        System.out.println();
         return array;
     }
+
     //First Element Max for pivot selection
-    public static int [] firstMinArray(){
-        int[] array =randomNotSequencedArray();
-        Random random=new Random();
+    public  int[] firstMinArray() {
+        int[] array = randomNotSequencedArray();
+        Random random = new Random();
 
-        int min =array[0];
-        int minIndex=0;
+        int min = array[0];
+        int minIndex = 0;
 
         for (int i = 0; i < array.length; i++) {
-            if(min>array [i]){
-                min=array[i];
-                minIndex=i;
+            if (min > array[i]) {
+                min = array[i];
+                minIndex = i;
             }
 
         }
-           array[0]= array[minIndex];
-           array[minIndex]=random.nextInt(numberbound)+min; // element smaller than max value
+        array[0] = array[minIndex];
+        array[minIndex] = random.nextInt(numberbound) + min; // element smaller than max value
 
-
-        for (int i = 0; i < array.length; i++) {
-            System.out.print(array[i]+" ");
-        }
-        System.out.println();
         return array;
     }
-    public static int [] firstMaxArray(){
-        int[] array =randomNotSequencedArray();
-        Random random=new Random();
-        int max=array[0];
-        int maxIndex=0;
+
+    public  int[] firstMaxArray() {
+        int[] array = randomNotSequencedArray();
+        Random random = new Random();
+        int max = array[0];
+        int maxIndex = 0;
 
         for (int i = 0; i < array.length; i++) {
-            if(array[i]>max){
-                max=array[i];
-                maxIndex=i;
+            if (array[i] > max) {
+                max = array[i];
+                maxIndex = i;
             }
 
         }
-        array[0]= array[maxIndex];
-        array[maxIndex]=random.nextInt(max); // element smaller than max value
+        array[0] = array[maxIndex];
+        array[maxIndex] = random.nextInt(max); // element smaller than max value
 
 
-        for (int i = 0; i < array.length; i++) {
-            System.out.print(array[i]+" ");
-        }
-        System.out.println();
         return array;
     }
-    public static int [] firstMeanArray(){
-        int[] array =randomNotSequencedArray();
-        int mean=0;
+
+    public  int[] firstMeanArray() {
+        int[] array = randomNotSequencedArray();
+        int mean = 0;
         int firstElement;
 
 
         for (int i = 0; i < array.length; i++) {
-            mean=mean+array[i];
+            mean = mean + array[i];
         }
-        mean=(mean/array.length);
+        mean = (mean / array.length);
 
-        firstElement=array[0];
-        array[0]= mean;
+        firstElement = array[0];
+        array[0] = mean;
 
-
-
-        for (int i = 0; i < array.length; i++) {
-            System.out.print(array[i]+" ");
-        }
-        System.out.println();
         return array;
-    }
-    public static void main(String[] args){
-
-        randomArray();
-        repetitiveRandomArray();
-        minArray();
-        maxArray();
-        divisionArray(2);
-        flashChangeArray();
-        notDistinctArray();
-        firstMaxArray();
-        firstMinArray();
-        firstMeanArray();
     }
 }
