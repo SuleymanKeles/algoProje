@@ -1,15 +1,14 @@
 import java.util.ArrayList;
 import java.util.Random;
 
+// 11 Input Type Array Generation
+
 public class InputArrays {
-    public  int arraySize = 10;
-    public  int numberbound = 200;
+    public  int arraySize = 1000;
+    public  int numberbound = 10000;
 
-/*
-    public InputArrays(int size) {
-        this.arraySize=size;
-    }*/
 
+    // Generates random value arrays in range  whether checking repetitive elements are exist or not
     public  int[] randomArray() {
         int[] array = new int[arraySize];
         for (int i = 1; i <= array.length; i++) {
@@ -23,32 +22,37 @@ public class InputArrays {
             array[randomIndexToSwap] = array[i];
             array[i] = temp;
         }
-
-//        for (int i = 0; i < array.length; i++) {
-//            System.out.print(array[i] + " ");
-//        }
-//        System.out.println();
         return array;
     }
 
-
+    //Generates repetitive values arrays in range
     public  int[] repetitiveRandomArray() {
-        int[] array = new int[arraySize];
+        int[] array = randomNotSequencedArray();
+        int[] indexArray=new int[arraySize];
 
-        Random rand2 = new Random();
+        Random random = new Random();
 
-        for (int i = 0; i < array.length; i++) {
-            array[i] = rand2.nextInt(numberbound) + 1;
+        for (int i = 0; i < arraySize; i++) {
+            indexArray[i] = random.nextInt(arraySize/2) +1;
         }
 
-//        for (int i = 0; i < array.length; i++) {
-//            System.out.print(array[i] + " ");
-//        }
-//        System.out.println();
+        int randomValue1= random.nextInt(numberbound)+1;
+        int randomValue2= random.nextInt(numberbound)+1;
+
+        for (int i = 0; i < indexArray.length; ) {
+            array[indexArray[i]]=  randomValue1;
+            i=i+111;
+        }
+
+        for (int i = 0; i < indexArray.length;) {
+            array[indexArray[i]]=  randomValue2;
+            i=i+100;
+        }
+
         return array;
     }
 
-
+    //Generates array in ascending order .
     public  int[] minArray() {
 
         int[] array = new int[arraySize];
@@ -61,6 +65,7 @@ public class InputArrays {
         return array;
     }
 
+    //Generates array in descending order .
     public  int[] maxArray() {
         int[] array = new int[arraySize];
 
@@ -72,10 +77,10 @@ public class InputArrays {
         for (int i = 0; i < array.length; i++) {
             array[i] = arrayList.get(i);
         }
-
         return array;
     }
 
+    //Generates a mixed value array which has element values change by 2 .
     public  int[] divisionArray(int division) {
         int[] array = new int[arraySize];
 
@@ -88,15 +93,14 @@ public class InputArrays {
         for (int i = 0; i < array.length; i++) {
             array[i] = arrayList.get(i);
         }
-
         return array;
     }
-
+    //Generates array which has elements all are same
     public  int[] notDistinctArray() {
         int[] array = new int[arraySize];
 
         Random rand = new Random();
-        int element = rand.nextInt(numberbound + 1);
+        int element = rand.nextInt(numberbound )+1;
         for (int i = 0; i < array.length; i++) {
             array[i] = element;
         }
@@ -104,6 +108,7 @@ public class InputArrays {
         return array;
     }
 
+    //Array has one outlying min or max element depending on the average value  difference from min and max values
     public  int[] flashChangeArray() {
         int[] array = randomNotSequencedArray();
 
@@ -134,20 +139,18 @@ public class InputArrays {
         return array;
     }
 
+   // Array created in a given range that is not sequential.
     public  int[] randomNotSequencedArray() {
         int[] array = new int[arraySize];
-
         Random rand = new Random();
-
         for (int i = 0; i < array.length; i++) {
-            int randomValue = rand.nextInt(numberbound + 1);
+            int randomValue = rand.nextInt(numberbound )+ 1;
             array[i] = randomValue;
         }
-
         return array;
     }
 
-    //First Element Max for pivot selection
+    //Generates an array which has min element at first index for pivot selection
     public  int[] firstMinArray() {
         int[] array = randomNotSequencedArray();
         Random random = new Random();
@@ -167,7 +170,7 @@ public class InputArrays {
 
         return array;
     }
-
+    //Generates an array which has max element at first index for pivot selection
     public  int[] firstMaxArray() {
         int[] array = randomNotSequencedArray();
         Random random = new Random();
@@ -188,6 +191,7 @@ public class InputArrays {
         return array;
     }
 
+    //Generates an array which has mean value element at first index for pivot selection
     public  int[] firstMeanArray() {
         int[] array = randomNotSequencedArray();
         int mean = 0;
