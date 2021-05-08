@@ -25,16 +25,44 @@ public class main {
         long estimatedTimeCounting = 0;
         long estimatedTimeQuickMedian = 0;
 
-        String[] sheetName = {"randomArray", "repetitiveRandomArray", "minArray", "maxArray", "divisionArray2", "divisionArray4", "divisionArray8", "divisionArray16", "divisionArray32"};
+        String[] sheetName = {"randomArray", "repetitiveRandomArray", "minArray", "maxArray",};
 
         Workbook workbook = null;
 
         workbook = new XSSFWorkbook();
 
         Sheet sheetAverage = workbook.createSheet("Average");
-        int arraySize = 10;
-        int repeatNumber = 10;
+        for (int i = 0; i < 10; i++) {
+            Row row = sheetAverage.createRow(i);
+        }
+
+        int arraySize = 100;
+        int repeatNumber = 100;
         for (int inputArraySizeCounter = 1; inputArraySizeCounter <= 10; inputArraySizeCounter++) {
+            Row row = sheetAverage.getRow(0);
+            row.createCell(0).setCellValue("TITLE");
+            for (int i = 1; i <= sheetName.length; i++) {
+                // each column 12 characters wide
+                row = sheetAverage.getRow(i);
+                sheetAverage.setColumnWidth(i, 12 * 256);
+                Cell cell = row.createCell(0 );
+
+                cell.setCellValue(sheetName[i -1]);
+            }
+            final String[] headerRow = {"Insertion", "Merge", "QuickFirts", "QuickMedian"};
+            row = sheetAverage.getRow(0);
+            for (int i = 0; i < headerRow.length; i++) {
+                // each column 12 characters wide
+                sheetAverage.setColumnWidth(i, 12 * 256);
+                Cell cell = row.createCell(i + 1 + ((inputArraySizeCounter - 1) * 6) );
+
+
+                row = sheetAverage.getRow(0);
+                row.getCell(0).setCellValue(5);
+
+
+                cell.setCellValue(headerRow[i]);
+            }
 
             ArrayList<Double> avarageInsertionList = new ArrayList<>();
             ArrayList<Double> avarageMergeList = new ArrayList<>();
@@ -47,6 +75,8 @@ public class main {
             System.out.println("SSSS " + inputs.arraySize);
 
             for (int inputArrayType = 0; inputArrayType < sheetName.length; inputArrayType++) {
+
+                row = sheetAverage.getRow(inputArrayType+1);
 
                 double avarageTimeInsertion = 0;
                 double avarageTimeBinaryInsertion = 0;
@@ -61,9 +91,9 @@ public class main {
 
                 switch (inputArrayType) {
                     case 0 -> tempArray = inputs.randomArray();
-                    case 1 -> tempArray = inputs.repetitiveRandomArray();
+                    case 1 -> tempArray = inputs.firstMinArray();
                     case 2 -> tempArray = inputs.minArray();
-                    case 3 -> tempArray = inputs.minArray();
+                    case 3 -> tempArray = inputs.firstMaxArray();
                     case 4 -> tempArray = inputs.divisionArray(2);
                     case 5 -> tempArray = inputs.divisionArray(4);
                     case 6 -> tempArray = inputs.divisionArray(8);
@@ -156,17 +186,22 @@ public class main {
                 avarageQuickList.add((avarageTimeQuickFirst));
                 avarageQuickMedianList.add((avarageTimeQuickMedian));
 
+                row.createCell(1 + ((inputArraySizeCounter -1 ) *6)).setCellValue(avarageTimeInsertion);
+                row.createCell(2 + ((inputArraySizeCounter -1 ) *6)).setCellValue(avarageTimeMerge);
+                row.createCell(3 + ((inputArraySizeCounter -1 ) *6)).setCellValue(avarageTimeQuickFirst);
+                row.createCell(4 + ((inputArraySizeCounter -1 ) *6)).setCellValue(avarageTimeQuickMedian);
+
             }
             System.out.println(avarageInsertionList.toString());
             System.out.println(avarageMergeList.toString());
             System.out.println(avarageQuickList.toString());
             System.out.println(avarageQuickMedianList.toString());
-            writeExcelAvarage(workbook, sheetAverage, sheetName, inputArraySizeCounter,
-                    avarageInsertionList,
-                    avarageMergeList,
-                    avarageQuickList,
-                    avarageQuickMedianList
-            );
+//            writeExcelAvarage(workbook, sheetAverage, sheetName, inputArraySizeCounter,
+//                    avarageInsertionList,
+//                    avarageMergeList,
+//                    avarageQuickList,
+//                    avarageQuickMedianList
+//            );
         }
 
 
@@ -252,7 +287,7 @@ public class main {
 
         final String[] headerRow = {"Insertion", "Merge", "QuickFirts", "QuickMedian"};
 
-        int initalRowindex = arraySizeCounter *  5;
+        int initalRowindex = (arraySizeCounter - 1) * 5;
 
         Row row = sheet.createRow(initalRowindex);
         row.createCell(0).setCellValue("TITLE");
@@ -267,17 +302,17 @@ public class main {
 
         for (int i = 0; i < headerColumn.length; i++) {
             // each column 12 characters wide
-            row = sheet.createRow(i + 1 );
+            row = sheet.createRow(i + 1);
 
             sheet.setColumnWidth(0, 12 * 256);
 
-            Cell cell = row.createCell( initalRowindex);
+            Cell cell = row.createCell(initalRowindex);
             cell.setCellValue(headerColumn[i]);
         }
 
 
-        for (int i = 0; i < headerColumn.length; i += 5) {
-            row = sheet.getRow(i + 1 +initalRowindex);
+        for (int i = 0; i < headerColumn.length; i++) {
+            row = sheet.getRow(i + 1 + initalRowindex);
             row.createCell(1).setCellValue(avarageInsertionList.get(i));
             row.createCell(2).setCellValue(avarageMergeList.get(i));
             row.createCell(3).setCellValue(avarageQuickList.get(i));
