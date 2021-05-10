@@ -65,7 +65,7 @@ public class InputArrays {
         return array;
     }
 
-    public void halfIncreaseDecrease(){
+    public  int[] halfIncreaseDecrease(){
         int array[]=minArray();
 
         int index =  0;
@@ -73,6 +73,8 @@ public class InputArrays {
             array[i]=array[index];
             index++;
         }
+        return array;
+
     }
 
     //Generates array in descending order .

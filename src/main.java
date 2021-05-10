@@ -10,7 +10,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class main {
 
@@ -28,7 +27,7 @@ public class main {
         long estimatedTimeCounting = 0;
         long estimatedTimeQuickMedian = 0;
 
-        String[] sheetName = {"randomArray", "repetitiveRandomArray", "minArray", "maxArray", "notDistinctArray", "flash ChangeArray", "firstMinArray", "firstMaxArray"};
+        String[] sheetName = {"randomArray", "repetitiveRandomArray", "minArray", "maxArray", "notDistinctArray", "flash ChangeArray", "firstMinArray", "firstMaxArray","Mountain"};
 
         Workbook workbook = null;
 
@@ -39,9 +38,11 @@ public class main {
             Row row = sheetAverage.createRow(i);
         }
 
-        int arraySize = 100;
-        int repeatNumber = 20;
-        for (int inputArraySizeCounter = 1; inputArraySizeCounter <= 20; inputArraySizeCounter++) {
+
+//        int arraySize = 1000;
+        int[] arraySizeArray = {250, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000};
+        int repeatNumber = 10;
+        for (int inputArraySizeCounter = 1; inputArraySizeCounter <= 12; inputArraySizeCounter++) {
             Row row = sheetAverage.getRow(0);
             row.createCell(0).setCellValue("TITLE");
             for (int i = 1; i <= sheetName.length; i++) {
@@ -57,7 +58,7 @@ public class main {
             for (int i = 0; i < headerRow.length; i++) {
                 // each column 12 characters wide
                 sheetAverage.setColumnWidth(i, 12 * 256);
-                Cell cell = row.createCell(i + 1 + ((inputArraySizeCounter - 1) * 8));
+                Cell cell = row.createCell(i + 1 + ((inputArraySizeCounter - 1) * 9));
                 cell.setCellValue(headerRow[i]);
             }
 
@@ -70,9 +71,9 @@ public class main {
             ArrayList<String> avarageCountingList = new ArrayList<>();
 
             InputArrays inputs = new InputArrays();
-            inputs.arraySize = inputArraySizeCounter * arraySize;
+            inputs.arraySize = arraySizeArray[inputArraySizeCounter - 1];
 
-            int size=inputs.arraySize;
+            int size = inputs.arraySize;
             int[] arr1 = new int[inputs.arraySize];
             int[] arr2 = new int[inputs.arraySize];
             int[] arr3 = new int[inputs.arraySize];
@@ -101,7 +102,7 @@ public class main {
                 /*case 8 : tempArray = inputs.divisionArray(32);
                         break;*/
                 switch (inputArrayType) {
-                    case 0 -> tempArray = inputs.randomNotSequencedArray();
+                    case 0 -> tempArray = inputs.randomUniqueArray();
                     case 1 -> tempArray = inputs.repetitiveRandomArray();
                     case 2 -> tempArray = inputs.minArray();
                     case 3 -> tempArray = inputs.maxArray();
@@ -109,13 +110,12 @@ public class main {
                     case 5 -> tempArray = inputs.flashChangeArray();
                     case 6 -> tempArray = inputs.firstMinArray();
                     case 7 -> tempArray = inputs.firstMaxArray();
+                    case 8 -> tempArray = inputs.halfIncreaseDecrease();
                     default -> System.exit(0);
                 }
 
-//                System.out.println(Arrays.toString(tempArray) + "TMEP");
-
                 int x = 0;
-                System.out.println("___TempArry____ "+inputArrayType +" "+Arrays.toString(tempArray) + "__________");
+//                System.out.println("___TempArry____ "+inputArrayType +" "+Arrays.toString(tempArray) + "__________");
                 while (x < repeatNumber) {
                     System.arraycopy(tempArray, 0, arr1, 0, tempArray.length);
                     System.arraycopy(tempArray, 0, arr2, 0, tempArray.length);
@@ -125,6 +125,7 @@ public class main {
                     System.arraycopy(tempArray, 0, arr6, 0, tempArray.length);
                     System.arraycopy(tempArray, 0, arr7, 0, tempArray.length);
 
+//                System.out.println(Arrays.toString(arr1) + "arr1");
 
 //                       // for each sorting algorithm temporary arrays which will hold sorted array
 
@@ -205,13 +206,13 @@ public class main {
                 avarageHeapList.add(String.valueOf((avarageTimeHeap)));
                 avarageCountingList.add(String.valueOf((avarageTimeCounting)));
 
-                row.createCell(1 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeInsertion);
-                row.createCell(2 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeBinaryInsertion);
-                row.createCell(3 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeMerge);
-                row.createCell(4 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeQuickFirst);
-                row.createCell(5 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeQuickMedian);
-                row.createCell(6 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeHeap);
-                row.createCell(7 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeCounting);
+                row.createCell(1 + ((inputArraySizeCounter - 1) * 9)).setCellValue(avarageTimeInsertion);
+                row.createCell(2 + ((inputArraySizeCounter - 1) * 9)).setCellValue(avarageTimeBinaryInsertion);
+                row.createCell(3 + ((inputArraySizeCounter - 1) * 9)).setCellValue(avarageTimeMerge);
+                row.createCell(4 + ((inputArraySizeCounter - 1) * 9)).setCellValue(avarageTimeQuickFirst);
+                row.createCell(5 + ((inputArraySizeCounter - 1) * 9)).setCellValue(avarageTimeQuickMedian);
+                row.createCell(6 + ((inputArraySizeCounter - 1) * 9)).setCellValue(avarageTimeHeap);
+                row.createCell(7 + ((inputArraySizeCounter - 1) * 9)).setCellValue(avarageTimeCounting);
 
                 avarageTimeInsertion = 0;
                 avarageTimeBinaryInsertion = 0;
@@ -239,7 +240,7 @@ public class main {
         try {
 
             // Writing sheet data
-            File file = new File("C:\\Users\\emine\\OneDrive\\Belgeler\\GitHub\\algoProje\\src\\selam.xlsx");   //creating a new file instance
+            File file = new File("C:\\Users\\suleyman\\Documents\\GitHub\\algoProje\\src\\selam.xlsx");   //creating a new file instance
             FileOutputStream outputStream = new FileOutputStream(file);
             workbook.write(outputStream);
 
@@ -274,7 +275,7 @@ public class main {
         newValue = time;
         if (time > 500000) {
             anomalyTimeCounter++;
-                    newValue = newValue / (10 ^ (digit - 5));
+            newValue = newValue / (10 ^ (digit - 5));
         }
         if (newValue > 500000)
             newValue = anomalyTime(newValue);
