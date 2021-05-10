@@ -4,12 +4,12 @@ import java.util.Random;
 // 11 Input Type Array Generation
 
 public class InputArrays {
-    public  int arraySize = 1000;
-    public  int numberbound = 10000;
+    public  int arraySize =0;
+    public   int numberbound=10000 ;
 
 
     // Generates random value arrays in range  whether checking repetitive elements are exist or not
-    public  int[] randomArray() {
+    public  int[] randomUniqueArray() {
         int[] array = new int[arraySize];
         for (int i = 1; i <= array.length; i++) {
             array[i - 1] = i;
@@ -27,7 +27,7 @@ public class InputArrays {
 
     //Generates repetitive values arrays in range
     public  int[] repetitiveRandomArray() {
-        int[] array = randomNotSequencedArray();
+        int[] array = randomNotUniqueArray();
         int[] indexArray=new int[arraySize];
 
         Random random = new Random();
@@ -41,12 +41,12 @@ public class InputArrays {
 
         for (int i = 0; i < indexArray.length; ) {
             array[indexArray[i]]=  randomValue1;
-            i=i+50;
+            i=i+10;
         }
 
         for (int i = 0; i < indexArray.length;) {
             array[indexArray[i]]=  randomValue2;
-            i=i+100;
+            i=i+11;
         }
 
         return array;
@@ -63,6 +63,16 @@ public class InputArrays {
 
 
         return array;
+    }
+
+    public void halfIncreaseDecrease(){
+        int array[]=minArray();
+
+        int index =  0;
+        for (int i = (array.length)-1; i >= (arraySize/2)+1; i--) {
+            array[i]=array[index];
+            index++;
+        }
     }
 
     //Generates array in descending order .
@@ -110,7 +120,7 @@ public class InputArrays {
 
     //Array has one outlying min or max element depending on the average value  difference from min and max values
     public  int[] flashChangeArray() {
-        int[] array = randomNotSequencedArray();
+        int[] array = randomNotUniqueArray();
 
         int max = array[0];
         int min = 0;
@@ -132,7 +142,7 @@ public class InputArrays {
         mean = (mean / array.length);
 
         if ((max - mean) > (mean - min)) {
-            array[maxIndex] = numberbound;
+            array[maxIndex] = numberbound-1;
         } else
             array[minIndex] = 0;
 
@@ -140,7 +150,7 @@ public class InputArrays {
     }
 
    // Array created in a given range that is not sequential.
-    public  int[] randomNotSequencedArray() {
+    public  int[] randomNotUniqueArray() {
         int[] array = new int[arraySize];
         Random rand = new Random();
         for (int i = 0; i < array.length; i++) {
@@ -152,7 +162,7 @@ public class InputArrays {
 
     //Generates an array which has min element at first index for pivot selection
     public  int[] firstMinArray() {
-        int[] array = randomNotSequencedArray();
+        int[] array = randomNotUniqueArray();
         Random random = new Random();
 
         int min = array[0];
@@ -172,7 +182,7 @@ public class InputArrays {
     }
     //Generates an array which has max element at first index for pivot selection
     public  int[] firstMaxArray() {
-        int[] array = randomNotSequencedArray();
+        int[] array = randomNotUniqueArray();
         Random random = new Random();
         int max = array[0];
         int maxIndex = 0;
@@ -193,7 +203,7 @@ public class InputArrays {
 
     //Generates an array which has mean value element at first index for pivot selection
     public  int[] firstMeanArray() {
-        int[] array = randomNotSequencedArray();
+        int[] array = randomNotUniqueArray();
         int mean = 0;
         int firstElement;
 
