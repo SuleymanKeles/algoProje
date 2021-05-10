@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class main {
 
@@ -39,7 +40,7 @@ public class main {
         }
 
         int arraySize = 100;
-        int repeatNumber = 1000;
+        int repeatNumber = 20;
         for (int inputArraySizeCounter = 1; inputArraySizeCounter <= 20; inputArraySizeCounter++) {
             Row row = sheetAverage.getRow(0);
             row.createCell(0).setCellValue("TITLE");
@@ -70,6 +71,8 @@ public class main {
 
             InputArrays inputs = new InputArrays();
             inputs.arraySize = inputArraySizeCounter * arraySize;
+
+            int size=inputs.arraySize;
             int[] arr1 = new int[inputs.arraySize];
             int[] arr2 = new int[inputs.arraySize];
             int[] arr3 = new int[inputs.arraySize];
@@ -92,7 +95,7 @@ public class main {
                 long avarageTimeCounting = 0;
                 long avarageTimeQuickMedian = 0;
                 System.out.println(sheetName[inputArrayType] + "Finished...");
-                int[] tempArray = new int[10000];
+                int[] tempArray = new int[size];
 
 
                 /*case 8 : tempArray = inputs.divisionArray(32);
@@ -110,8 +113,9 @@ public class main {
                 }
 
 //                System.out.println(Arrays.toString(tempArray) + "TMEP");
-                int x = 0;
 
+                int x = 0;
+                System.out.println("___TempArry____ "+inputArrayType +" "+Arrays.toString(tempArray) + "__________");
                 while (x < repeatNumber) {
                     System.arraycopy(tempArray, 0, arr1, 0, tempArray.length);
                     System.arraycopy(tempArray, 0, arr2, 0, tempArray.length);
@@ -123,8 +127,6 @@ public class main {
 
 
 //                       // for each sorting algorithm temporary arrays which will hold sorted array
-//                    System.out.println(Arrays.toString(arr1) + "_");
-
 
 //                       InsertionSort
                     Insertion insertion = new Insertion();
@@ -151,7 +153,7 @@ public class main {
 //                         Quick-sort (pivot is always selected as the first element),
                     QuickSortFirstIndex quickSortFirstIndex = new QuickSortFirstIndex();
                     startTime = System.nanoTime();
-                    quickSortFirstIndex.quickSort(arr4, 0, arr4.length - 1);
+                    quickSortFirstIndex.sort(arr4);
                     endTime = System.nanoTime();
                     estimatedTimeQuickFirst = endTime - startTime;
 
@@ -203,13 +205,13 @@ public class main {
                 avarageHeapList.add(String.valueOf((avarageTimeHeap)));
                 avarageCountingList.add(String.valueOf((avarageTimeCounting)));
 
-                row.createCell(1 + ((inputArraySizeCounter - 1) )).setCellValue(avarageTimeInsertion);
-//                row.createCell(2 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeBinaryInsertion);
-//                row.createCell(3 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeMerge);
-//                row.createCell(4 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeQuickFirst);
-//                row.createCell(5 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeQuickMedian);
-//                row.createCell(6 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeHeap);
-//                row.createCell(7 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeCounting);
+                row.createCell(1 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeInsertion);
+                row.createCell(2 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeBinaryInsertion);
+                row.createCell(3 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeMerge);
+                row.createCell(4 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeQuickFirst);
+                row.createCell(5 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeQuickMedian);
+                row.createCell(6 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeHeap);
+                row.createCell(7 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeCounting);
 
                 avarageTimeInsertion = 0;
                 avarageTimeBinaryInsertion = 0;
@@ -237,7 +239,7 @@ public class main {
         try {
 
             // Writing sheet data
-            File file = new File("C:\\Users\\suleyman\\Documents\\GitHub\\algoProje\\src\\selam.xlsx");   //creating a new file instance
+            File file = new File("C:\\Users\\emine\\OneDrive\\Belgeler\\GitHub\\algoProje\\src\\selam.xlsx");   //creating a new file instance
             FileOutputStream outputStream = new FileOutputStream(file);
             workbook.write(outputStream);
 

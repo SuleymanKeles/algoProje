@@ -41,7 +41,7 @@ public class InputArrays {
 
         for (int i = 0; i < indexArray.length; ) {
             array[indexArray[i]]=  randomValue1;
-            i=i+111;
+            i=i+50;
         }
 
         for (int i = 0; i < indexArray.length;) {
