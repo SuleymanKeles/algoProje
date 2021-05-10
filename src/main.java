@@ -14,6 +14,8 @@ import java.util.ArrayList;
 public class main {
 
 
+    static int anomalyTimeCounter = 0;
+
     public static void main(String[] args) {
         long startTime = 0;
         long endTime = 0;
@@ -25,115 +27,103 @@ public class main {
         long estimatedTimeCounting = 0;
         long estimatedTimeQuickMedian = 0;
 
-        String[] sheetName = {"randomArray", "repetitiveRandomArray", "minArray", "maxArray","notDistinctArray","flash ChangeArray","firstMinArray","firstMaxArray"};
+        String[] sheetName = {"randomArray", "repetitiveRandomArray", "minArray", "maxArray", "notDistinctArray", "flash ChangeArray", "firstMinArray", "firstMaxArray"};
 
         Workbook workbook = null;
 
         workbook = new XSSFWorkbook();
 
         Sheet sheetAverage = workbook.createSheet("Average");
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 50; i++) {
             Row row = sheetAverage.createRow(i);
         }
 
         int arraySize = 100;
-        int repeatNumber = 100;
-        for (int inputArraySizeCounter = 1; inputArraySizeCounter <= 10; inputArraySizeCounter++) {
+        int repeatNumber = 1000;
+        for (int inputArraySizeCounter = 1; inputArraySizeCounter <= 20; inputArraySizeCounter++) {
             Row row = sheetAverage.getRow(0);
             row.createCell(0).setCellValue("TITLE");
             for (int i = 1; i <= sheetName.length; i++) {
                 // each column 12 characters wide
                 row = sheetAverage.getRow(i);
                 sheetAverage.setColumnWidth(i, 12 * 256);
-                Cell cell = row.createCell(0 );
-
-                cell.setCellValue(sheetName[i -1]);
+                Cell cell = row.createCell(0);
+                cell.setCellValue(sheetName[i - 1]);
             }
-            final String[] headerRow = {"Insertion", "BinaryInsertion ","Merge", "QuickFirst", "QuickMedian","Heap","Counting"};
+            final String[] headerRow = {"Insertion", "BinaryInsertion ", "Merge", "QuickFirst", "QuickMedian", "Heap", "Counting"};
 
             row = sheetAverage.getRow(0);
             for (int i = 0; i < headerRow.length; i++) {
                 // each column 12 characters wide
                 sheetAverage.setColumnWidth(i, 12 * 256);
-                Cell cell = row.createCell(i + 1 + ((inputArraySizeCounter - 1) * 8) );
-
-
-                row = sheetAverage.getRow(0);
-                row.getCell(0).setCellValue(5);
-
-
+                Cell cell = row.createCell(i + 1 + ((inputArraySizeCounter - 1) * 8));
                 cell.setCellValue(headerRow[i]);
             }
 
-            ArrayList<Double> avarageInsertionList = new ArrayList<>();
-            ArrayList<Double> averageBinaryInsertionList = new ArrayList<>();
-            ArrayList<Double> avarageMergeList = new ArrayList<>();
-            ArrayList<Double> avarageQuickList = new ArrayList<>();
-            ArrayList<Double> avarageQuickMedianList = new ArrayList<>();
-            ArrayList<Double> avarageHeapList = new ArrayList<>();
-            ArrayList<Double> avarageCountingList = new ArrayList<>();
+            ArrayList<String> avarageInsertionList = new ArrayList<>();
+            ArrayList<String> averageBinaryInsertionList = new ArrayList<>();
+            ArrayList<String> avarageMergeList = new ArrayList<>();
+            ArrayList<String> avarageQuickList = new ArrayList<>();
+            ArrayList<String> avarageQuickMedianList = new ArrayList<>();
+            ArrayList<String> avarageHeapList = new ArrayList<>();
+            ArrayList<String> avarageCountingList = new ArrayList<>();
 
             InputArrays inputs = new InputArrays();
             inputs.arraySize = inputArraySizeCounter * arraySize;
+            int[] arr1 = new int[inputs.arraySize];
+            int[] arr2 = new int[inputs.arraySize];
+            int[] arr3 = new int[inputs.arraySize];
+            int[] arr4 = new int[inputs.arraySize];
+            int[] arr5 = new int[inputs.arraySize];
+            int[] arr6 = new int[inputs.arraySize];
+            int[] arr7 = new int[inputs.arraySize];
 
             System.out.println("SSSS " + inputs.arraySize);
 
             for (int inputArrayType = 0; inputArrayType < sheetName.length; inputArrayType++) {
 
-                row = sheetAverage.getRow(inputArrayType+1);
+                row = sheetAverage.getRow(inputArrayType + 1);
 
-                double avarageTimeInsertion = 0;
-                double avarageTimeBinaryInsertion = 0;
-                double avarageTimeMerge = 0;
-                double avarageTimeQuickFirst = 0;
-                double avarageTimeHeap = 0;
-                double avarageTimeCounting = 0;
-                double avarageTimeQuickMedian = 0;
+                long avarageTimeInsertion = 0;
+                long avarageTimeBinaryInsertion = 0;
+                long avarageTimeMerge = 0;
+                long avarageTimeQuickFirst = 0;
+                long avarageTimeHeap = 0;
+                long avarageTimeCounting = 0;
+                long avarageTimeQuickMedian = 0;
                 System.out.println(sheetName[inputArrayType] + "Finished...");
                 int[] tempArray = new int[10000];
 
 
-                switch (inputArrayType) {
-                    case 0 :
-                        tempArray = inputs.randomNotSequencedArray();
-                        break;
-                    case 1 :
-                        tempArray = inputs.repetitiveRandomArray();
-                        break;
-                    case 2 :
-                        tempArray = inputs.minArray();
-                        break;
-                    case 3 :
-                        tempArray = inputs.maxArray();
-                        break;
-                    case 4 :
-                        tempArray = inputs.notDistinctArray();
-                        break;
-                    case 5 :
-                        tempArray = inputs.flashChangeArray();
-                        break;
-                    case 6 :
-                        tempArray = inputs.firstMinArray();
-                        break;
-                    case 7 :
-                        tempArray = inputs.firstMaxArray();
-                        break;
-                    /*case 8 : tempArray = inputs.divisionArray(32);
+                /*case 8 : tempArray = inputs.divisionArray(32);
                         break;*/
-                    default :
-                        System.exit(0);
-                        break;
+                switch (inputArrayType) {
+                    case 0 -> tempArray = inputs.randomNotSequencedArray();
+                    case 1 -> tempArray = inputs.repetitiveRandomArray();
+                    case 2 -> tempArray = inputs.minArray();
+                    case 3 -> tempArray = inputs.maxArray();
+                    case 4 -> tempArray = inputs.notDistinctArray();
+                    case 5 -> tempArray = inputs.flashChangeArray();
+                    case 6 -> tempArray = inputs.firstMinArray();
+                    case 7 -> tempArray = inputs.firstMaxArray();
+                    default -> System.exit(0);
                 }
+
+//                System.out.println(Arrays.toString(tempArray) + "TMEP");
                 int x = 0;
+
                 while (x < repeatNumber) {
+                    System.arraycopy(tempArray, 0, arr1, 0, tempArray.length);
+                    System.arraycopy(tempArray, 0, arr2, 0, tempArray.length);
+                    System.arraycopy(tempArray, 0, arr3, 0, tempArray.length);
+                    System.arraycopy(tempArray, 0, arr4, 0, tempArray.length);
+                    System.arraycopy(tempArray, 0, arr5, 0, tempArray.length);
+                    System.arraycopy(tempArray, 0, arr6, 0, tempArray.length);
+                    System.arraycopy(tempArray, 0, arr7, 0, tempArray.length);
+
+
 //                       // for each sorting algorithm temporary arrays which will hold sorted array
-                    int[] arr1 = tempArray;
-                    int[] arr2 = tempArray;
-                    int[] arr3 = tempArray;
-                    int[] arr4 = tempArray;
-                    int[] arr5 = tempArray;
-                    int[] arr6 = tempArray;
-                    int[] arr7 = tempArray;
+//                    System.out.println(Arrays.toString(arr1) + "_");
 
 
 //                       InsertionSort
@@ -143,6 +133,7 @@ public class main {
                     endTime = System.nanoTime();
                     estimatedTimeInsertion = endTime - startTime;
 
+//                    System.out.println("*"+Arrays.toString(arr1) );
 //                      BinaryInsertionSort
                     BinaryInsertionSort binaryInsertionSort = new BinaryInsertionSort();
                     startTime = System.nanoTime();
@@ -204,30 +195,34 @@ public class main {
                 avarageTimeHeap /= repeatNumber;
                 avarageTimeCounting /= repeatNumber;
 
-//            writeExcel(workbook, sheetName, repeatNumber, inputArrayType,
-//                    estimatedTimeInsertionList,
-//                    estimatedTimeMergeList,
-//                    estimatedTimeQuickList,
-//                    estimatedTimeQuickMedianList
-//            );
+                avarageInsertionList.add(String.valueOf((avarageTimeInsertion)));
+                averageBinaryInsertionList.add(String.valueOf((avarageTimeBinaryInsertion)));
+                avarageMergeList.add(String.valueOf((avarageTimeMerge)));
+                avarageQuickList.add(String.valueOf((avarageTimeQuickFirst)));
+                avarageQuickMedianList.add(String.valueOf((avarageTimeQuickMedian)));
+                avarageHeapList.add(String.valueOf((avarageTimeHeap)));
+                avarageCountingList.add(String.valueOf((avarageTimeCounting)));
 
-                avarageInsertionList.add((avarageTimeInsertion));
-                averageBinaryInsertionList.add((avarageTimeBinaryInsertion));
-                avarageMergeList.add((avarageTimeMerge));
-                avarageQuickList.add((avarageTimeQuickFirst));
-                avarageQuickMedianList.add((avarageTimeQuickMedian));
-                avarageHeapList.add((avarageTimeHeap));
-                avarageCountingList.add((avarageTimeCounting));
+                row.createCell(1 + ((inputArraySizeCounter - 1) )).setCellValue(avarageTimeInsertion);
+//                row.createCell(2 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeBinaryInsertion);
+//                row.createCell(3 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeMerge);
+//                row.createCell(4 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeQuickFirst);
+//                row.createCell(5 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeQuickMedian);
+//                row.createCell(6 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeHeap);
+//                row.createCell(7 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeCounting);
 
-                row.createCell(1 + ((inputArraySizeCounter -1 ) *8)).setCellValue(avarageTimeInsertion);
-                row.createCell(2 + ((inputArraySizeCounter -1 ) *8)).setCellValue(avarageTimeBinaryInsertion);
-                row.createCell(3 + ((inputArraySizeCounter -1 ) *8)).setCellValue(avarageTimeMerge);
-                row.createCell(4 + ((inputArraySizeCounter -1 ) *8)).setCellValue(avarageTimeQuickFirst);
-                row.createCell(5 + ((inputArraySizeCounter -1 ) *8)).setCellValue(avarageTimeQuickMedian);
-                row.createCell(6 + ((inputArraySizeCounter -1 ) *8)).setCellValue(avarageTimeHeap);
-                row.createCell(7 + ((inputArraySizeCounter -1 ) *8)).setCellValue(avarageTimeCounting);
-
+                avarageTimeInsertion = 0;
+                avarageTimeBinaryInsertion = 0;
+                avarageTimeMerge = 0;
+                avarageTimeQuickFirst = 0;
+                avarageTimeQuickMedian = 0;
+                avarageTimeHeap = 0;
+                avarageTimeCounting = 0;
+                System.out.println();
             }
+
+
+            System.out.println();
             System.out.println(avarageInsertionList.toString());
             System.out.println(averageBinaryInsertionList.toString());
             System.out.println(avarageMergeList.toString());
@@ -236,19 +231,13 @@ public class main {
             System.out.println(avarageHeapList.toString());
             System.out.println(avarageCountingList.toString());
 
-//            writeExcelAvarage(workbook, sheetAverage, sheetName, inputArraySizeCounter,
-//                    avarageInsertionList,
-//                    avarageMergeList,
-//                    avarageQuickList,
-//                    avarageQuickMedianList
-//            );
         }
 
 
         try {
 
             // Writing sheet data
-            File file = new File("C:\\Users\\emine\\OneDrive\\Belgeler\\GitHub\\algoProje\\src\\selam.xlsx");   //creating a new file instance
+            File file = new File("C:\\Users\\suleyman\\Documents\\GitHub\\algoProje\\src\\selam.xlsx");   //creating a new file instance
             FileOutputStream outputStream = new FileOutputStream(file);
             workbook.write(outputStream);
 
@@ -267,6 +256,7 @@ public class main {
         }
 
         System.out.println("*******END*******");
+        System.out.println("anomalyTimeCounter ? " + anomalyTimeCounter);
 
     }
 
@@ -280,10 +270,11 @@ public class main {
             ++digit;
         }
         newValue = time;
-        if (time > 1000000) {
-            newValue = newValue / (10 ^ (digit - 5));
+        if (time > 500000) {
+            anomalyTimeCounter++;
+                    newValue = newValue / (10 ^ (digit - 5));
         }
-        if (newValue > 1000000)
+        if (newValue > 500000)
             newValue = anomalyTime(newValue);
         return newValue;
     }
