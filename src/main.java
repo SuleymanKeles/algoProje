@@ -41,7 +41,7 @@ public class main {
 
 //        int arraySize = 1000;
         int[] arraySizeArray = {250, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000};
-        int repeatNumber = 10;
+        int repeatNumber = 500;
         for (int inputArraySizeCounter = 1; inputArraySizeCounter <= 12; inputArraySizeCounter++) {
             Row row = sheetAverage.getRow(0);
             row.createCell(0).setCellValue("TITLE");
@@ -58,7 +58,7 @@ public class main {
             for (int i = 0; i < headerRow.length; i++) {
                 // each column 12 characters wide
                 sheetAverage.setColumnWidth(i, 12 * 256);
-                Cell cell = row.createCell(i + 1 + ((inputArraySizeCounter - 1) * 9));
+                Cell cell = row.createCell(i + 1 + ((inputArraySizeCounter - 1) * 8));
                 cell.setCellValue(headerRow[i]);
             }
 
@@ -206,13 +206,13 @@ public class main {
                 avarageHeapList.add(String.valueOf((avarageTimeHeap)));
                 avarageCountingList.add(String.valueOf((avarageTimeCounting)));
 
-                row.createCell(1 + ((inputArraySizeCounter - 1) * 9)).setCellValue(avarageTimeInsertion);
-                row.createCell(2 + ((inputArraySizeCounter - 1) * 9)).setCellValue(avarageTimeBinaryInsertion);
-                row.createCell(3 + ((inputArraySizeCounter - 1) * 9)).setCellValue(avarageTimeMerge);
-                row.createCell(4 + ((inputArraySizeCounter - 1) * 9)).setCellValue(avarageTimeQuickFirst);
-                row.createCell(5 + ((inputArraySizeCounter - 1) * 9)).setCellValue(avarageTimeQuickMedian);
-                row.createCell(6 + ((inputArraySizeCounter - 1) * 9)).setCellValue(avarageTimeHeap);
-                row.createCell(7 + ((inputArraySizeCounter - 1) * 9)).setCellValue(avarageTimeCounting);
+                row.createCell(1 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeInsertion);
+                row.createCell(2 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeBinaryInsertion);
+                row.createCell(3 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeMerge);
+                row.createCell(4 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeQuickFirst);
+                row.createCell(5 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeQuickMedian);
+                row.createCell(6 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeHeap);
+                row.createCell(7 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeCounting);
 
                 avarageTimeInsertion = 0;
                 avarageTimeBinaryInsertion = 0;
