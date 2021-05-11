@@ -41,7 +41,7 @@ public class main {
 
 //        int arraySize = 1000;
         int[] arraySizeArray = {250, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000};
-        int repeatNumber = 500;
+        int repeatNumber = 50;
         for (int inputArraySizeCounter = 1; inputArraySizeCounter <= 12; inputArraySizeCounter++) {
             Row row = sheetAverage.getRow(0);
             row.createCell(0).setCellValue("TITLE");
@@ -161,7 +161,7 @@ public class main {
 //                          Quick-sort MEDIAN
                     QuickSortMedian quickSortMedian = new QuickSortMedian();
                     startTime = System.nanoTime();
-                    quickSortMedian.quickSort(arr5);
+                    quickSortMedian.sort(arr5);
                     endTime = System.nanoTime();
                     estimatedTimeQuickMedian = endTime - startTime;
 

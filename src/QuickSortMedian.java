@@ -1,151 +1,70 @@
+import java.util.Arrays;
+
 public class QuickSortMedian {
 
-    public static void quickSort(int[] intArray) {
-        recQuickSort(intArray, 0, intArray.length - 1);
+
+    public long sort(int[] array) {
+        long start = System.nanoTime();
+        sort(array, 0, array.length - 1);
+        long elapsedTime = System.nanoTime() - start;
+        return elapsedTime;
     }
 
-    public static void recQuickSort(int[] intArray, int left, int right) {
-        int size = right - left + 1;
-        if (size <= 3)
-            manualSort(intArray, left, right);
-        else {
-            double median = medianOf3(intArray, left, right);
-            int partition = partitionIt(intArray, left, right, median);
-            recQuickSort(intArray, left, partition - 1);
-            recQuickSort(intArray, partition + 1, right);
+
+    public void sort(int[] array, int l, int r) {
+        if (l < r) {
+            // select pivot element (left-most)
+
+            int first = array[l];
+            int last = array[r];
+            int middle = array[(r+l)/2];
+
+            int flm[] = {first,middle,last}; // 7, 19, 12
+            Arrays.sort(flm); // 7 ,12, 19
+
+            array[l] = flm[0]; // 7 - 7
+            array[(r+l)/2] = flm[1]; // 12 - 13
+            array[r] = flm[2]; // 19 -19
+
+            swap(array,middle,r-1);
+            int pivot = array[r-1];
+
+            // partition and shuffle around pivot
+            int i = l;
+            int j = r;
+            while (i < j) {
+                // move right to avoid pivot element
+                i += 1;
+                // scan right: find elements greater than pivot
+                while (i <= r && array[i] < pivot) {
+                    i += 1;
+                }
+                // scan left: find elements smaller than pivot
+                while (j >= l && array[j] > pivot) {
+                    j -= 1;
+                }
+                if (i <= r && i < j) {
+                    // swap around pivot
+                    swap(array, i, j);
+                }
+            }
+            // put pivot in correct place
+            swap(array, l, j);
+            // sort partitions
+            Arrays.sort(array);
+            sort(array, j + 1, r);
         }
     }
 
-    public static int medianOf3(int[] intArray, int left, int right) {
-        int center = (left + right) / 2;
 
-        if (intArray[left] > intArray[center])
-            swap(intArray, left, center);
-
-        if (intArray[left] > intArray[right])
-            swap(intArray, left, right);
-
-        if (intArray[center] > intArray[right])
-            swap(intArray, center, right);
-
-        swap(intArray, center, right - 1);
-        return intArray[right - 1];
-    }
-
-    public static void swap(int[] intArray, int dex1, int dex2) {
-        int temp = intArray[dex1];
-        intArray[dex1] = intArray[dex2];
-        intArray[dex2] = temp;
-    }
-
-    public static int partitionIt(int[] intArray, int left, int right, double pivot) {
-        int leftPtr = left;
-        int rightPtr = right - 1;
-
-        while (true) {
-            while (intArray[++leftPtr] < pivot)
-                ;
-            while (intArray[--rightPtr] > pivot)
-                ;
-            if (leftPtr >= rightPtr)
-                break;
-            else
-                swap(intArray, leftPtr, rightPtr);
-        }
-        swap(intArray, leftPtr, right - 1);
-        return leftPtr;
-    }
-
-    public static void manualSort(int[] intArray, int left, int right) {
-        int size = right - left + 1;
-        if (size <= 1)
-            return;
-        if (size == 2) {
-            if (intArray[left] > intArray[right])
-                swap(intArray, left, right);
-            return;
-        } else {
-            if (intArray[left] > intArray[right - 1])
-                swap(intArray, left, right - 1);
-            if (intArray[left] > intArray[right])
-                swap(intArray, left, right);
-            if (intArray[right - 1] > intArray[right])
-                swap(intArray, right - 1, right);
+    public void swap(int[] array, int i, int j) {
+        if (i >= 0 && j >= 0 && i < array.length && j < array.length) {
+            int tmp = array[i];
+            array[i] = array[j];
+            array[j] = tmp;
         }
     }
-//    public void quickSort(int[] intArray) {
-//        recQuickSort(intArray, 0, intArray.length - 1);
-//    }
-//
-//    public static void recQuickSort(int[] intArray, int left, int right) {
-//        int size = right - left + 1;
-//        if (size <= 3)
-//            manualSort(intArray, left, right);
-//        else {
-//            double median = medianOf3(intArray, left, right);
-//            int partition = partitionIt(intArray, left, right, median);
-//            recQuickSort(intArray, left, partition - 1);
-//            recQuickSort(intArray, partition + 1, right);
-//        }
-//    }
-//
-//    public static int medianOf3(int[] intArray, int left, int right) {
-//        int center = (left + right) / 2;
-//
-//        if (intArray[left] > intArray[center])
-//            swap(intArray, left, center);
-//
-//        if (intArray[left] > intArray[right])
-//            swap(intArray, left, right);
-//
-//        if (intArray[center] > intArray[right])
-//            swap(intArray, center, right);
-//
-//        swap(intArray, center, right - 1);
-//        return intArray[right - 1];
-//    }
-//
-//    public static void swap(int[] intArray, int dex1, int dex2) {
-//        int temp = intArray[dex1];
-//        intArray[dex1] = intArray[dex2];
-//        intArray[dex2] = temp;
-//    }
-//
-//    public static int partitionIt(int[] intArray, int left, int right, double pivot) {
-//        int leftPtr = left;
-//        int rightPtr = right - 1;
-//
-//        while (true) {
-//            while (intArray[++leftPtr] < pivot)
-//                ;
-//            while (intArray[--rightPtr] > pivot)
-//                ;
-//            if (leftPtr >= rightPtr)
-//                break;
-//            else
-//                swap(intArray, leftPtr, rightPtr);
-//        }
-//        swap(intArray, leftPtr, right - 1);
-//        return leftPtr;
-//    }
-//
-//    public static void manualSort(int[] intArray, int left, int right) {
-//        int size = right - left + 1;
-//        if (size <= 1)
-//            return;
-//        if (size == 2) {
-//            if (intArray[left] > intArray[right])
-//                swap(intArray, left, right);
-//            return;
-//        } else {
-//            if (intArray[left] > intArray[right - 1])
-//                swap(intArray, left, right - 1);
-//            if (intArray[left] > intArray[right])
-//                swap(intArray, left, right);
-//            if (intArray[right - 1] > intArray[right])
-//                swap(intArray, right - 1, right);
-//        }
-//    }
+
+
 
 }
-
