@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 // 11 Input Type Array Generation
@@ -126,7 +127,6 @@ public class InputArrays {
 
         int max = array[0];
         int min = 0;
-        int mean = 0;
         int maxIndex = 0;
         int minIndex = 0;
 
@@ -139,15 +139,9 @@ public class InputArrays {
                 min = array[i];
                 minIndex = i;
             }
-            mean = mean + array[i];
         }
-        mean = (mean / array.length);
-
-        if ((max - mean) > (mean - min)) {
             array[maxIndex] = numberbound-1;
-        } else
             array[minIndex] = 0;
-
         return array;
     }
 
@@ -220,4 +214,47 @@ public class InputArrays {
 
         return array;
     }
+
+    // Merge Case Worst Case Array Input Generator functions ---> halfOddHalfEvenMix
+
+    public  int [] halfOddHalfEvenMix(){
+        int array[]=minArray();
+        System.out.println(Arrays.toString(array));
+        generateArray(array,0,array.length-1);
+        return array;
+    }
+    void generateArray(int array[], int leftElement, int rightElement) {
+
+        if (leftElement < rightElement) {
+            int middle =  ((rightElement - leftElement) / 2)+leftElement ;
+
+            int[] right = new int[rightElement - middle];
+            int[] left = new int[middle - leftElement + 1];
+
+            divide(array, left, right, leftElement, middle, rightElement);
+
+            generateArray(left, leftElement, middle);
+            generateArray(right, middle + 1, rightElement);
+
+            merge(array, left, right, leftElement, middle, rightElement);
+        }
+    }
+    //Updates left and right subArray with serial elements which have odd and even values of ordered array .
+    void divide(int array[], int leftSub[], int rightSub[], int left, int middle, int right) {
+        for ( int i = 0; i <= middle - left; i++ )
+            leftSub[i] = array[i * 2];
+
+        for ( int i = 0; i < right - middle; i++ )
+            rightSub[i] = array[i * 2 + 1];
+    }
+    // Merge left and right subArray
+    void merge(int array[], int leftSub[], int rightSub[], int left, int middle, int right ) {
+        int i;
+        for ( i = 0; i <= middle - left; i++ )
+            array[i] = leftSub[i];
+
+        for ( int j = 0; j < right - middle; j++ )
+            array[i + j] = rightSub[j];
+    }
+
 }
