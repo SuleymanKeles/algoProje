@@ -27,14 +27,14 @@ public class main {
         long estimatedTimeCounting = 0;
         long estimatedTimeQuickMedian = 0;
 
-        String[] sheetName = {"randomArray", "repetitiveRandomArray", "minArray", "maxArray", "notDistinctArray", "flash ChangeArray", "firstMinArray", "firstMaxArray","Mountain"};
+        String[] sheetName = {"randomArray", "repetitiveRandomArray", "minArray", "maxArray", "notDistinctArray", "flash ChangeArray", "firstMinArray", "firstMaxArray", "Mountain"};
 
         Workbook workbook = null;
 
         workbook = new XSSFWorkbook();
 
         Sheet sheetAverage = workbook.createSheet("Average");
-        for (int i = 0; i < 50; i++) {
+        for ( int i = 0; i < 50; i++ ) {
             Row row = sheetAverage.createRow(i);
         }
 
@@ -42,10 +42,10 @@ public class main {
 //        int arraySize = 1000;
         int[] arraySizeArray = {250, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000};
         int repeatNumber = 50;
-        for (int inputArraySizeCounter = 1; inputArraySizeCounter <= 12; inputArraySizeCounter++) {
+        for ( int inputArraySizeCounter = 1; inputArraySizeCounter <= 12; inputArraySizeCounter++ ) {
             Row row = sheetAverage.getRow(0);
             row.createCell(0).setCellValue("TITLE");
-            for (int i = 1; i <= sheetName.length; i++) {
+            for ( int i = 1; i <= sheetName.length; i++ ) {
                 // each column 12 characters wide
                 row = sheetAverage.getRow(i);
                 sheetAverage.setColumnWidth(i, 12 * 256);
@@ -55,7 +55,7 @@ public class main {
             final String[] headerRow = {"Insertion", "BinaryInsertion ", "Merge", "QuickFirst", "QuickMedian", "Heap", "Counting"};
 
             row = sheetAverage.getRow(0);
-            for (int i = 0; i < headerRow.length; i++) {
+            for ( int i = 0; i < headerRow.length; i++ ) {
                 // each column 12 characters wide
                 sheetAverage.setColumnWidth(i, 12 * 256);
                 Cell cell = row.createCell(i + 1 + ((inputArraySizeCounter - 1) * 8));
@@ -84,7 +84,7 @@ public class main {
 
             System.out.println("SSSS " + inputs.arraySize);
 
-            for (int inputArrayType = 0; inputArrayType < sheetName.length; inputArrayType++) {
+            for ( int inputArrayType = 0; inputArrayType < sheetName.length; inputArrayType++ ) {
 
                 row = sheetAverage.getRow(inputArrayType + 1);
 
@@ -240,7 +240,7 @@ public class main {
         try {
 
             // Writing sheet data
-            File file = new File("C:\\Users\\suleyman\\Documents\\GitHub\\algoProje\\src\\selam.xlsx");   //creating a new file instance
+            File file = new File("C:\\Users\\emine\\OneDrive\\Belgeler\\GitHub\\algoProje\\src\\selam.xlsx");   //creating a new file instance
             FileOutputStream outputStream = new FileOutputStream(file);
             workbook.write(outputStream);
 
@@ -286,7 +286,7 @@ public class main {
     public static double listAverage(ArrayList<Long> arrayList) {
         long total = 0;
         double avg;
-        for (Long aLong : arrayList) total += aLong;
+        for ( Long aLong : arrayList ) total += aLong;
         avg = total / arrayList.size(); // finding ther average value
         return avg;
     }
@@ -326,7 +326,7 @@ public class main {
         Row row = sheet.createRow(initalRowindex);
         row.createCell(0).setCellValue("TITLE");
 
-        for (int i = 0; i < headerRow.length; i++) {
+        for ( int i = 0; i < headerRow.length; i++ ) {
             // each column 12 characters wide
             sheet.setColumnWidth(i, 12 * 256);
             Cell cell = row.createCell(i + 1 + initalRowindex);
@@ -334,7 +334,7 @@ public class main {
             cell.setCellValue(headerRow[i]);
         }
 
-        for (int i = 0; i < headerColumn.length; i++) {
+        for ( int i = 0; i < headerColumn.length; i++ ) {
             // each column 12 characters wide
             row = sheet.createRow(i + 1);
 
@@ -345,7 +345,7 @@ public class main {
         }
 
 
-        for (int i = 0; i < headerColumn.length; i++) {
+        for ( int i = 0; i < headerColumn.length; i++ ) {
             row = sheet.getRow(i + 1 + initalRowindex);
             row.createCell(1).setCellValue(avarageInsertionList.get(i));
             row.createCell(2).setCellValue(avarageMergeList.get(i));

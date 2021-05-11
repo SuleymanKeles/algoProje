@@ -67,13 +67,14 @@ public class InputArrays {
     }
 
     public  int[] halfIncreaseDecrease(){
-        int array[]=minArray();
+        int array[]=maxArray();
 
         int index =  0;
         for (int i = (array.length)-1; i >= (arraySize/2)+1; i--) {
             array[i]=array[index];
             index++;
         }
+
         return array;
 
     }
