@@ -27,7 +27,7 @@ public class main {
         long estimatedTimeCounting = 0;
         long estimatedTimeQuickMedian = 0;
 
-        String[] sheetName = {"randomArray", "repetitiveRandomArray", "minArray", "maxArray", "notDistinctArray", "flash ChangeArray", "firstMinArray", "firstMaxArray", "Mountain"};
+        String[] sheetName = {"randomArray", "repetitiveRandomArray", "minArray", "maxArray", "notDistinctArray", "flash ChangeArray", "firstMinArray", "firstMaxArray", "Mountain","halfOddHalfEvenMix"};
 
         Workbook workbook = null;
 
@@ -41,7 +41,7 @@ public class main {
 
 //        int arraySize = 1000;
         int[] arraySizeArray = {250, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000};
-        int repeatNumber = 50;
+        int repeatNumber = 100;
         for ( int inputArraySizeCounter = 1; inputArraySizeCounter <= 12; inputArraySizeCounter++ ) {
             Row row = sheetAverage.getRow(0);
             row.createCell(0).setCellValue("TITLE");
@@ -111,6 +111,7 @@ public class main {
                     case 6 -> tempArray = inputs.firstMinArray();
                     case 7 -> tempArray = inputs.firstMaxArray();
                     case 8 -> tempArray = inputs.halfIncreaseDecrease();
+                    case 9 -> tempArray = inputs.halfOddHalfEvenMix();
                     default -> System.exit(0);
                 }
 
@@ -240,7 +241,7 @@ public class main {
         try {
 
             // Writing sheet data
-            File file = new File("C:\\Users\\emine\\OneDrive\\Belgeler\\GitHub\\algoProje\\src\\selam.xlsx");   //creating a new file instance
+            File file = new File("C:\\Users\\suleyman\\Documents\\GitHub\\algoProje\\src\\selam.xlsx");   //creating a new file instance
             FileOutputStream outputStream = new FileOutputStream(file);
             workbook.write(outputStream);
 
