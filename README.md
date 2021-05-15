@@ -1,9 +1,9 @@
-#
-#                                      MARMARA UNIVERSITY
-#                                    FACULTY OF ENGINEERING
-#                                 COMPUTER ENGINEERING DEPARTMENT
-#                             CSE 2046 Analysis of Algorithms , 2021 (Spring)
-#                                          Homework 1
+
+                                      MARMARA UNIVERSITY
+                                    FACULTY OF ENGINEERING
+                                 COMPUTER ENGINEERING DEPARTMENT
+                             CSE 2046 Analysis of Algorithms , 2021 (Spring)
+                                          Homework 1
 
      NAME                                                                         STUDENT NUMBER
      Süleyman KELEŞ                                                               150118039
