@@ -5,12 +5,14 @@ import java.util.Random;
 // 11 Input Type Array Generation
 
 public class InputArrays {
-    public  int arraySize =0;
-    public   int numberbound=10000 ;
+
+    public int arraySize = 0;
+    public int numberbound = 10000;
 
 
     // Generates random value arrays in range  whether checking repetitive elements are exist or not
-    public  int[] randomUniqueArray() {
+    // {1,2,3,4,5,6,7,8.....1000} and shuffle
+    public int[] randomUniqueArray() {
         int[] array = new int[arraySize];
         for (int i = 1; i <= array.length; i++) {
             array[i - 1] = i;
@@ -27,34 +29,36 @@ public class InputArrays {
     }
 
     //Generates repetitive values arrays in range
-    public  int[] repetitiveRandomArray() {
+    // {1,1,1,4,5,5,5,5.....1000}
+    public int[] repetitiveRandomArray() {
         int[] array = randomNotUniqueArray();
-        int[] indexArray=new int[arraySize];
+        int[] indexArray = new int[arraySize];
 
         Random random = new Random();
 
         for (int i = 0; i < arraySize; i++) {
-            indexArray[i] = random.nextInt(arraySize/2) +1;
+            indexArray[i] = random.nextInt(arraySize / 2) + 1;
         }
 
-        int randomValue1= random.nextInt(numberbound)+1;
-        int randomValue2= random.nextInt(numberbound)+1;
+        int randomValue1 = random.nextInt(numberbound) + 1;
+        int randomValue2 = random.nextInt(numberbound) + 1;
 
         for (int i = 0; i < indexArray.length; ) {
-            array[indexArray[i]]=  randomValue1;
-            i=i+10;
+            array[indexArray[i]] = randomValue1;
+            i = i + 10;
         }
 
-        for (int i = 0; i < indexArray.length;) {
-            array[indexArray[i]]=  randomValue2;
-            i=i+11;
+        for (int i = 0; i < indexArray.length; ) {
+            array[indexArray[i]] = randomValue2;
+            i = i + 11;
         }
 
         return array;
     }
 
     //Generates array in ascending order .
-    public  int[] minArray() {
+    // {1,2,3,4,5,6,7,8.....1000}
+    public int[] minArray() {
 
         int[] array = new int[arraySize];
 
@@ -65,13 +69,14 @@ public class InputArrays {
 
         return array;
     }
+    // Generates Increase after Decrease array
+    // {1,2,3,4,5,.....500,501,500,499,498,497,496....}
+    public int[] halfIncreaseDecrease() {
+        int array[] = maxArray();
 
-    public  int[] halfIncreaseDecrease(){
-        int array[]=maxArray();
-
-        int index =  0;
-        for (int i = (array.length)-1; i >= (arraySize/2)+1; i--) {
-            array[i]=array[index];
+        int index = 0;
+        for (int i = (array.length) - 1; i >= (arraySize / 2) + 1; i--) {
+            array[i] = array[index];
             index++;
         }
 
@@ -80,7 +85,8 @@ public class InputArrays {
     }
 
     //Generates array in descending order .
-    public  int[] maxArray() {
+    // {1000,999,998,997,996....}
+    public int[] maxArray() {
         int[] array = new int[arraySize];
 
         ArrayList<Integer> arrayList = new ArrayList<>();
@@ -94,27 +100,13 @@ public class InputArrays {
         return array;
     }
 
-    //Generates a mixed value array which has element values change by 2 .
-    public  int[] divisionArray(int division) {
-        int[] array = new int[arraySize];
-
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        for (int i = 0; i < division; i++) {
-            for (int j = numberbound - i; j >= 1; j = j - division) {
-                arrayList.add(j);
-            }
-        }
-        for (int i = 0; i < array.length; i++) {
-            array[i] = arrayList.get(i);
-        }
-        return array;
-    }
     //Generates array which has elements all are same
-    public  int[] notDistinctArray() {
+    //     // {99,999,99,99,99....}
+    public int[] notDistinctArray() {
         int[] array = new int[arraySize];
 
         Random rand = new Random();
-        int element = rand.nextInt(numberbound )+1;
+        int element = rand.nextInt(numberbound) + 1;
         for (int i = 0; i < array.length; i++) {
             array[i] = element;
         }
@@ -123,7 +115,8 @@ public class InputArrays {
     }
 
     //Array has one outlying min or max element depending on the average value  difference from min and max values
-    public  int[] flashChangeArray() {
+    //     // {1,999....}
+    public int[] flashChangeArray() {
         int[] array = randomNotUniqueArray();
 
         int max = array[0];
@@ -141,24 +134,26 @@ public class InputArrays {
                 minIndex = i;
             }
         }
-            array[maxIndex] = numberbound-1;
-            array[minIndex] = 0;
+        array[maxIndex] = numberbound - 1;
+        array[minIndex] = 0;
         return array;
     }
 
-   // Array created in a given range that is not sequential.
-    public  int[] randomNotUniqueArray() {
+    // Array created in a given range that is not sequential.
+    //     // {1,999....}
+    public int[] randomNotUniqueArray() {
         int[] array = new int[arraySize];
         Random rand = new Random();
         for (int i = 0; i < array.length; i++) {
-            int randomValue = rand.nextInt(numberbound )+ 1;
+            int randomValue = rand.nextInt(numberbound) + 1;
             array[i] = randomValue;
         }
         return array;
     }
 
     //Generates an array which has min element at first index for pivot selection
-    public  int[] firstMinArray() {
+    // {1,56,78,45...}
+    public int[] firstMinArray() {
         int[] array = randomNotUniqueArray();
         Random random = new Random();
 
@@ -177,8 +172,10 @@ public class InputArrays {
 
         return array;
     }
+
     //Generates an array which has max element at first index for pivot selection
-    public  int[] firstMaxArray() {
+    // {10000,56,78,45...}
+    public int[] firstMaxArray() {
         int[] array = randomNotUniqueArray();
         Random random = new Random();
         int max = array[0];
@@ -199,7 +196,8 @@ public class InputArrays {
     }
 
     //Generates an array which has mean value element at first index for pivot selection
-    public  int[] firstMeanArray() {
+
+    public int[] firstMeanArray() {
         int[] array = randomNotUniqueArray();
         int mean = 0;
         int firstElement;
@@ -218,16 +216,17 @@ public class InputArrays {
 
     // Merge Case Worst Case Array Input Generator functions ---> halfOddHalfEvenMix
 
-    public  int [] halfOddHalfEvenMix(){
-        int array[]=minArray();
+    public int[] halfOddHalfEvenMix() {
+        int array[] = minArray();
         System.out.println(Arrays.toString(array));
-        generateArray(array,0,array.length-1);
+        generateArray(array, 0, array.length - 1);
         return array;
     }
+
     void generateArray(int array[], int leftElement, int rightElement) {
 
         if (leftElement < rightElement) {
-            int middle =  ((rightElement - leftElement) / 2)+leftElement ;
+            int middle = ((rightElement - leftElement) / 2) + leftElement;
 
             int[] right = new int[rightElement - middle];
             int[] left = new int[middle - leftElement + 1];
@@ -240,21 +239,23 @@ public class InputArrays {
             merge(array, left, right, leftElement, middle, rightElement);
         }
     }
+
     //Updates left and right subArray with serial elements which have odd and even values of ordered array .
     void divide(int array[], int leftSub[], int rightSub[], int left, int middle, int right) {
-        for ( int i = 0; i <= middle - left; i++ )
+        for (int i = 0; i <= middle - left; i++)
             leftSub[i] = array[i * 2];
 
-        for ( int i = 0; i < right - middle; i++ )
+        for (int i = 0; i < right - middle; i++)
             rightSub[i] = array[i * 2 + 1];
     }
+
     // Merge left and right subArray
-    void merge(int array[], int leftSub[], int rightSub[], int left, int middle, int right ) {
+    void merge(int array[], int leftSub[], int rightSub[], int left, int middle, int right) {
         int i;
-        for ( i = 0; i <= middle - left; i++ )
+        for (i = 0; i <= middle - left; i++)
             array[i] = leftSub[i];
 
-        for ( int j = 0; j < right - middle; j++ )
+        for (int j = 0; j < right - middle; j++)
             array[i + j] = rightSub[j];
     }
 

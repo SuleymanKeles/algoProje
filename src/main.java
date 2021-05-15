@@ -1,79 +1,134 @@
+/*
+*                                         MARMARA UNIVERSITY
+*                                       FACULTY OF ENGINEERING
+*                                    COMPUTER ENGINEERING DEPARTMENT
+*                                CSE 2046 Analysis of Algorithms , 2021 (Spring)
+*                                             Homework 1
+*
+*        NAME                                                                         STUDENT NUMBER
+*        Süleyman KELEŞ                                                               150118039
+*        Emine ÇIĞ                                                                    150118012
+*
+*        Submitted to                                                                 DUE DATE
+*        Ömer KORÇAK                                                                   16.05.2021
+*
+*
+*        SUBJECT
+*           This Project Compare Sorting Algorithm by time complexity with different input array type.
+*
+*        Algorithms :
+*           1. Insertion-sort,
+*           2. Binary Insertion-sort1,
+*           3. Merge-sort,
+*           4. Quick-sort (pivot is always selected as the first element),
+*           5. Quick-sort with median-of-three pivot selection2.
+*           6. Heap-sort,
+*           7. Counting-sort3
+*
+*        Input Array Types :
+*           1. randomArray
+*           2. repetitiveRandomArray
+*           3. minArray
+*           4. maxArray
+*           5. unique
+*           6. flash ChangeArray
+*           7. firstMinArray
+*           8. firstMaxArray
+*           9. halfIncreaseHalfDecrease
+*           10. halfOddHalfEvenMix
+*
+*         Project have 3 loop
+*         First loop run  12 times. Input array Size {250, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000}
+*         Second loop run  10 times. Input array type (shown above)
+*         Last loop run 500 times. Repeat Number for calculate average value.
+*
+*         After all cycles, the data kept in memory are written to the excel data page.
+*
+*        This Project use Apache Poi Libraries for excel data sheet.
+*        If you want to run the project, you must load the library in the link and set the path variable in line 69.
+*        https://www.apache.org/dyn/closer.lua/poi/release/bin/poi-bin-5.0.0-20210120.zip
+*/
+
+
+
+
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
+
 public class main {
 
+    public static void Main() {
+        String path = "C:\\Users\\suleyman\\Documents\\GitHub\\algoProje\\src\\selam.xlsx";
+        // These variables are for calculating the times of Algorithms.
+        long startTime;
+        long endTime;
+        long estimatedTimeInsertion;
+        long estimatedTimeBinaryInsertion;
+        long estimatedTimeMerge;
+        long estimatedTimeQuickFirst;
+        long estimatedTimeHeap;
+        long estimatedTimeCounting;
+        long estimatedTimeQuickMedian;
 
-    static int anomalyTimeCounter = 0;
+        // Input Array Types
+        String[] inputArrayTypeList = {"randomArray", "repetitiveRandomArray", "minArray", "maxArray", "unique", "flash ChangeArray", "firstMinArray", "firstMaxArray", "halfIncreaseHalfDecrease", "halfOddHalfEvenMix"};
 
-    public static void main(String[] args) {
-        long startTime = 0;
-        long endTime = 0;
-        long estimatedTimeInsertion = 0;
-        long estimatedTimeBinaryInsertion = 0;
-        long estimatedTimeMerge = 0;
-        long estimatedTimeQuickFirst = 0;
-        long estimatedTimeHeap = 0;
-        long estimatedTimeCounting = 0;
-        long estimatedTimeQuickMedian = 0;
-
-        String[] sheetName = {"randomArray", "repetitiveRandomArray", "minArray", "maxArray", "notDistinctArray", "flash ChangeArray", "firstMinArray", "firstMaxArray", "Mountain","halfOddHalfEvenMix"};
-
-        Workbook workbook = null;
+        Workbook workbook;
 
         workbook = new XSSFWorkbook();
-
+        // Excel Sayfasında Satır oluşturma
         Sheet sheetAverage = workbook.createSheet("Average");
-        for ( int i = 0; i < 50; i++ ) {
+        for (int i = 0; i < 50; i++) {
             Row row = sheetAverage.createRow(i);
         }
-
-
-//        int arraySize = 1000;
+        // array sizes to be used in the experiment
         int[] arraySizeArray = {250, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000};
-        int repeatNumber = 100;
-        for ( int inputArraySizeCounter = 1; inputArraySizeCounter <= 12; inputArraySizeCounter++ ) {
+        // The number of repetitions made for the accuracy of the experiment
+        int repeatNumber = 500;
+        for (int inputArraySizeCounter = 1; inputArraySizeCounter <= 12; inputArraySizeCounter++) {
             Row row = sheetAverage.getRow(0);
             row.createCell(0).setCellValue("TITLE");
-            for ( int i = 1; i <= sheetName.length; i++ ) {
+            // Writing the table headings
+            for (int i = 1; i <= inputArrayTypeList.length; i++) {
                 // each column 12 characters wide
                 row = sheetAverage.getRow(i);
                 sheetAverage.setColumnWidth(i, 12 * 256);
                 Cell cell = row.createCell(0);
-                cell.setCellValue(sheetName[i - 1]);
+                cell.setCellValue(inputArrayTypeList[i - 1]);
             }
             final String[] headerRow = {"Insertion", "BinaryInsertion ", "Merge", "QuickFirst", "QuickMedian", "Heap", "Counting"};
 
             row = sheetAverage.getRow(0);
-            for ( int i = 0; i < headerRow.length; i++ ) {
+            for (int i = 0; i < headerRow.length; i++) {
                 // each column 12 characters wide
                 sheetAverage.setColumnWidth(i, 12 * 256);
                 Cell cell = row.createCell(i + 1 + ((inputArraySizeCounter - 1) * 8));
                 cell.setCellValue(headerRow[i]);
             }
 
-            ArrayList<String> avarageInsertionList = new ArrayList<>();
+            // Arrays where the averages of the remaining time are kept
+            ArrayList<String> averageInsertionList = new ArrayList<>();
             ArrayList<String> averageBinaryInsertionList = new ArrayList<>();
-            ArrayList<String> avarageMergeList = new ArrayList<>();
-            ArrayList<String> avarageQuickList = new ArrayList<>();
-            ArrayList<String> avarageQuickMedianList = new ArrayList<>();
-            ArrayList<String> avarageHeapList = new ArrayList<>();
-            ArrayList<String> avarageCountingList = new ArrayList<>();
+            ArrayList<String> averageMergeList = new ArrayList<>();
+            ArrayList<String> averageQuickList = new ArrayList<>();
+            ArrayList<String> averageQuickMedianList = new ArrayList<>();
+            ArrayList<String> averageHeapList = new ArrayList<>();
+            ArrayList<String> averageCountingList = new ArrayList<>();
 
             InputArrays inputs = new InputArrays();
             inputs.arraySize = arraySizeArray[inputArraySizeCounter - 1];
-
             int size = inputs.arraySize;
+            // Preparing Arrays Created for Each Algorithm
             int[] arr1 = new int[inputs.arraySize];
             int[] arr2 = new int[inputs.arraySize];
             int[] arr3 = new int[inputs.arraySize];
@@ -82,25 +137,22 @@ public class main {
             int[] arr6 = new int[inputs.arraySize];
             int[] arr7 = new int[inputs.arraySize];
 
-            System.out.println("SSSS " + inputs.arraySize);
-
-            for ( int inputArrayType = 0; inputArrayType < sheetName.length; inputArrayType++ ) {
+            System.out.println("Array Size " + inputs.arraySize);
+            // printing by array types
+            for (int inputArrayType = 0; inputArrayType < inputArrayTypeList.length; inputArrayType++) {
 
                 row = sheetAverage.getRow(inputArrayType + 1);
-
-                long avarageTimeInsertion = 0;
-                long avarageTimeBinaryInsertion = 0;
-                long avarageTimeMerge = 0;
-                long avarageTimeQuickFirst = 0;
-                long avarageTimeHeap = 0;
-                long avarageTimeCounting = 0;
-                long avarageTimeQuickMedian = 0;
-                System.out.println(sheetName[inputArrayType] + "Finished...");
+                // variables that keep the average time
+                long averageTimeInsertion = 0;
+                long averageTimeBinaryInsertion = 0;
+                long averageTimeMerge = 0;
+                long averageTimeQuickFirst = 0;
+                long averageTimeHeap = 0;
+                long averageTimeCounting = 0;
+                long averageTimeQuickMedian = 0;
+                System.out.println(inputArrayTypeList[inputArrayType] + " Started...");
                 int[] tempArray = new int[size];
 
-
-                /*case 8 : tempArray = inputs.divisionArray(32);
-                        break;*/
                 switch (inputArrayType) {
                     case 0 -> tempArray = inputs.randomUniqueArray();
                     case 1 -> tempArray = inputs.repetitiveRandomArray();
@@ -116,7 +168,6 @@ public class main {
                 }
 
                 int x = 0;
-//                System.out.println("___TempArry____ "+inputArrayType +" "+Arrays.toString(tempArray) + "__________");
                 while (x < repeatNumber) {
                     System.arraycopy(tempArray, 0, arr1, 0, tempArray.length);
                     System.arraycopy(tempArray, 0, arr2, 0, tempArray.length);
@@ -126,18 +177,14 @@ public class main {
                     System.arraycopy(tempArray, 0, arr6, 0, tempArray.length);
                     System.arraycopy(tempArray, 0, arr7, 0, tempArray.length);
 
-//                System.out.println(Arrays.toString(arr1) + "arr1");
-
-//                       // for each sorting algorithm temporary arrays which will hold sorted array
+//                       for each sorting algorithm temporary arrays which will hold sorted array
 
 //                       InsertionSort
-                    Insertion insertion = new Insertion();
                     startTime = System.nanoTime();
                     Insertion.insertionSort(arr1);
                     endTime = System.nanoTime();
                     estimatedTimeInsertion = endTime - startTime;
 
-//                    System.out.println("*"+Arrays.toString(arr1) );
 //                      BinaryInsertionSort
                     BinaryInsertionSort binaryInsertionSort = new BinaryInsertionSort();
                     startTime = System.nanoTime();
@@ -155,7 +202,7 @@ public class main {
 //                         Quick-sort (pivot is always selected as the first element),
                     QuickSortFirstIndex quickSortFirstIndex = new QuickSortFirstIndex();
                     startTime = System.nanoTime();
-                    quickSortFirstIndex.sort(arr4);
+                    QuickSortFirstIndex.sort(arr4);
                     endTime = System.nanoTime();
                     estimatedTimeQuickFirst = endTime - startTime;
 
@@ -176,64 +223,61 @@ public class main {
 //                                        COUNTING SORT
                     CountingSort countingSort = new CountingSort();
                     startTime = System.nanoTime();
-                    countingSort.sort(arr7);
+                    CountingSort.sort(arr7);
                     endTime = System.nanoTime();
                     estimatedTimeCounting = endTime - startTime;
 
-                    avarageTimeInsertion += estimatedTimeInsertion;
-                    avarageTimeBinaryInsertion += estimatedTimeBinaryInsertion;
-                    avarageTimeMerge += estimatedTimeMerge;
-                    avarageTimeQuickFirst += estimatedTimeQuickFirst;
-                    avarageTimeQuickMedian += estimatedTimeQuickMedian;
-                    avarageTimeHeap += estimatedTimeHeap;
-                    avarageTimeCounting += estimatedTimeCounting;
+                    // ortalama zaman hesaplama
+                    averageTimeInsertion += estimatedTimeInsertion;
+                    averageTimeBinaryInsertion += estimatedTimeBinaryInsertion;
+                    averageTimeMerge += estimatedTimeMerge;
+                    averageTimeQuickFirst += estimatedTimeQuickFirst;
+                    averageTimeQuickMedian += estimatedTimeQuickMedian;
+                    averageTimeHeap += estimatedTimeHeap;
+                    averageTimeCounting += estimatedTimeCounting;
 
                     x++;
                 }
+                // calculate average time
+                averageTimeInsertion /= repeatNumber;
+                averageTimeBinaryInsertion /= repeatNumber;
+                averageTimeMerge /= repeatNumber;
+                averageTimeQuickFirst /= repeatNumber;
+                averageTimeQuickMedian /= repeatNumber;
+                averageTimeHeap /= repeatNumber;
+                averageTimeCounting /= repeatNumber;
 
-                avarageTimeInsertion /= repeatNumber;
-                avarageTimeBinaryInsertion /= repeatNumber;
-                avarageTimeMerge /= repeatNumber;
-                avarageTimeQuickFirst /= repeatNumber;
-                avarageTimeQuickMedian /= repeatNumber;
-                avarageTimeHeap /= repeatNumber;
-                avarageTimeCounting /= repeatNumber;
+                averageInsertionList.add(String.valueOf((averageTimeInsertion)));
+                averageBinaryInsertionList.add(String.valueOf((averageTimeBinaryInsertion)));
+                averageMergeList.add(String.valueOf((averageTimeMerge)));
+                averageQuickList.add(String.valueOf((averageTimeQuickFirst)));
+                averageQuickMedianList.add(String.valueOf((averageTimeQuickMedian)));
+                averageHeapList.add(String.valueOf((averageTimeHeap)));
+                averageCountingList.add(String.valueOf((averageTimeCounting)));
 
-                avarageInsertionList.add(String.valueOf((avarageTimeInsertion)));
-                averageBinaryInsertionList.add(String.valueOf((avarageTimeBinaryInsertion)));
-                avarageMergeList.add(String.valueOf((avarageTimeMerge)));
-                avarageQuickList.add(String.valueOf((avarageTimeQuickFirst)));
-                avarageQuickMedianList.add(String.valueOf((avarageTimeQuickMedian)));
-                avarageHeapList.add(String.valueOf((avarageTimeHeap)));
-                avarageCountingList.add(String.valueOf((avarageTimeCounting)));
+                // Writing the times in the table
+                row.createCell(1 + ((inputArraySizeCounter - 1) * 8)).setCellValue(averageTimeInsertion);
+                row.createCell(2 + ((inputArraySizeCounter - 1) * 8)).setCellValue(averageTimeBinaryInsertion);
+                row.createCell(3 + ((inputArraySizeCounter - 1) * 8)).setCellValue(averageTimeMerge);
+                row.createCell(4 + ((inputArraySizeCounter - 1) * 8)).setCellValue(averageTimeQuickFirst);
+                row.createCell(5 + ((inputArraySizeCounter - 1) * 8)).setCellValue(averageTimeQuickMedian);
+                row.createCell(6 + ((inputArraySizeCounter - 1) * 8)).setCellValue(averageTimeHeap);
+                row.createCell(7 + ((inputArraySizeCounter - 1) * 8)).setCellValue(averageTimeCounting);
 
-                row.createCell(1 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeInsertion);
-                row.createCell(2 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeBinaryInsertion);
-                row.createCell(3 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeMerge);
-                row.createCell(4 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeQuickFirst);
-                row.createCell(5 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeQuickMedian);
-                row.createCell(6 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeHeap);
-                row.createCell(7 + ((inputArraySizeCounter - 1) * 8)).setCellValue(avarageTimeCounting);
-
-                avarageTimeInsertion = 0;
-                avarageTimeBinaryInsertion = 0;
-                avarageTimeMerge = 0;
-                avarageTimeQuickFirst = 0;
-                avarageTimeQuickMedian = 0;
-                avarageTimeHeap = 0;
-                avarageTimeCounting = 0;
+                System.out.println(inputArrayTypeList[inputArrayType] + " Finished.");
                 System.out.println();
             }
 
 
             System.out.println();
-            System.out.println(avarageInsertionList.toString());
-            System.out.println(averageBinaryInsertionList.toString());
-            System.out.println(avarageMergeList.toString());
-            System.out.println(avarageQuickList.toString());
-            System.out.println(avarageQuickMedianList.toString());
-            System.out.println(avarageHeapList.toString());
-            System.out.println(avarageCountingList.toString());
+
+//            System.out.println(averageInsertionList.toString());
+//            System.out.println(averageBinaryInsertionList.toString());
+//            System.out.println(averageMergeList.toString());
+//            System.out.println(averageQuickList.toString());
+//            System.out.println(averageQuickMedianList.toString());
+//            System.out.println(averageHeapList.toString());
+//            System.out.println(averageCountingList.toString());
 
         }
 
@@ -241,7 +285,7 @@ public class main {
         try {
 
             // Writing sheet data
-            File file = new File("C:\\Users\\suleyman\\Documents\\GitHub\\algoProje\\src\\selam.xlsx");   //creating a new file instance
+            File file = new File(path);   //creating a new file instance
             FileOutputStream outputStream = new FileOutputStream(file);
             workbook.write(outputStream);
 
@@ -260,99 +304,6 @@ public class main {
         }
 
         System.out.println("*******END*******");
-        System.out.println("anomalyTimeCounter ? " + anomalyTimeCounter);
-
-    }
-
-    public static long anomalyTime(long time) {
-        long newValue = 0;
-        int digit = 0;
-        newValue = time;
-        while (newValue != 0) {
-            // num = num/10
-            newValue /= 10;
-            ++digit;
-        }
-        newValue = time;
-        if (time > 500000) {
-            anomalyTimeCounter++;
-            newValue = newValue / (10 ^ (digit - 5));
-        }
-        if (newValue > 500000)
-            newValue = anomalyTime(newValue);
-        return newValue;
-    }
-
-
-    public static double listAverage(ArrayList<Long> arrayList) {
-        long total = 0;
-        double avg;
-        for ( Long aLong : arrayList ) total += aLong;
-        avg = total / arrayList.size(); // finding ther average value
-        return avg;
-    }
-
-    //method defined for reading a cell
-    public static double ReadCellData(int vRow, int vColumn, File file) {
-        double value;          //variable for storing the cell value
-        Workbook wb = null;           //initialize Workbook null
-        try {
-//reading data from a file in the form of bytes
-            FileInputStream fis = new FileInputStream(file);
-//constructs an XSSFWorkbook object, by buffering the whole stream into the memory
-            wb = new XSSFWorkbook(fis);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Sheet sheet = wb.getSheetAt(1);   //getting the XSSFSheet object at given index
-        Row row = sheet.getRow(vRow); //returns the logical row
-        Cell cell = row.getCell(vColumn); //getting the cell representing the given column
-        value = cell.getNumericCellValue();    //getting cell value
-        return value;               //returns the cell value
-    }
-
-    public static void writeExcelAvarage(Workbook workbook, Sheet sheet,
-                                         String[] headerColumn,
-                                         int arraySizeCounter,
-                                         ArrayList<Double> avarageInsertionList,
-                                         ArrayList<Double> avarageMergeList,
-                                         ArrayList<Double> avarageQuickList,
-                                         ArrayList<Double> avarageQuickMedianList
-    ) {
-
-        final String[] headerRow = {"Insertion", "Merge", "QuickFirts", "QuickMedian"};
-
-        int initalRowindex = (arraySizeCounter - 1) * 5;
-
-        Row row = sheet.createRow(initalRowindex);
-        row.createCell(0).setCellValue("TITLE");
-
-        for ( int i = 0; i < headerRow.length; i++ ) {
-            // each column 12 characters wide
-            sheet.setColumnWidth(i, 12 * 256);
-            Cell cell = row.createCell(i + 1 + initalRowindex);
-
-            cell.setCellValue(headerRow[i]);
-        }
-
-        for ( int i = 0; i < headerColumn.length; i++ ) {
-            // each column 12 characters wide
-            row = sheet.createRow(i + 1);
-
-            sheet.setColumnWidth(0, 12 * 256);
-
-            Cell cell = row.createCell(initalRowindex);
-            cell.setCellValue(headerColumn[i]);
-        }
-
-
-        for ( int i = 0; i < headerColumn.length; i++ ) {
-            row = sheet.getRow(i + 1 + initalRowindex);
-            row.createCell(1).setCellValue(avarageInsertionList.get(i));
-            row.createCell(2).setCellValue(avarageMergeList.get(i));
-            row.createCell(3).setCellValue(avarageQuickList.get(i));
-            row.createCell(4).setCellValue(avarageQuickMedianList.get(i));
-        }
 
     }
 }
